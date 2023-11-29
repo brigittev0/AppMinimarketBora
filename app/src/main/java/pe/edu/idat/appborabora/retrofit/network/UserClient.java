@@ -1,0 +1,34 @@
+package pe.edu.idat.appborabora.retrofit.network;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class UserClient {
+
+    //--Ejemplo --> "http://192.132.12.4:8081/user/";
+    //--CAMBIAR IP Y PUERTO
+    private static String BASE_URL = "http://192.168.0.15:8081/root/";
+
+    private ApiService apiService;
+
+    private static UserClient INSTANCE;
+
+    public UserClient(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        apiService = retrofit.create(ApiService.class);
+    }
+
+    public static UserClient getINSTANCE(){
+        if(INSTANCE == null){
+            INSTANCE = new UserClient();
+        }
+        return INSTANCE;
+    }
+
+    public ApiService getApiService() {
+        return apiService;
+    }
+}
