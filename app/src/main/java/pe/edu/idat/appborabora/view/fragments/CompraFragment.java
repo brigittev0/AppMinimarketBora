@@ -9,13 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import pe.edu.idat.appborabora.R;
+import pe.edu.idat.appborabora.databinding.FragmentCompraBinding;
 
 public class CompraFragment extends Fragment {
+    private FragmentCompraBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_compra, container, false);
+        binding = FragmentCompraBinding.inflate(getLayoutInflater());
+        return (binding.getRoot());
     }
 }

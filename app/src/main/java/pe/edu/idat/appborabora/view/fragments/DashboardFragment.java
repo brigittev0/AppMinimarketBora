@@ -9,13 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import pe.edu.idat.appborabora.R;
+import pe.edu.idat.appborabora.databinding.FragmentDashboardBinding;
 
 
 public class DashboardFragment extends Fragment {
+    private FragmentDashboardBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dashboard, container, false);
+        binding = FragmentDashboardBinding.inflate(getLayoutInflater());
+        return (binding.getRoot());
     }
 }

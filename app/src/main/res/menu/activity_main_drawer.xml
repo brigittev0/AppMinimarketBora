@@ -16,5 +16,13 @@
             android:id="@+id/compraFragment"
             android:icon="@drawable/baseline_shopping_cart_24"
             android:title="@string/menu_compra" />
+        <item
+            android:id="@+id/historialCompraFragment"
+            android:icon="@drawable/baseline_history_24"
+            android:title="@string/menu_historial_compra" />
+        <item
+            android:id="@+id/perfilFragment"
+            android:icon="@drawable/baseline_person_24"
+            android:title="@string/menu_perfil" />
     </group>
 </menu>

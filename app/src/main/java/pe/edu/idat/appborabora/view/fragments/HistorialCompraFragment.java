@@ -9,16 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import pe.edu.idat.appborabora.R;
-import pe.edu.idat.appborabora.databinding.FragmentCatalogoBinding;
+import pe.edu.idat.appborabora.databinding.FragmentHistorialCompraBinding;
 
+public class HistorialCompraFragment extends Fragment {
 
-public class CatalogoFragment extends Fragment {
-
-    private FragmentCatalogoBinding binding;
+   private FragmentHistorialCompraBinding binding;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentCatalogoBinding.inflate(getLayoutInflater());
+        binding = FragmentHistorialCompraBinding.inflate(getLayoutInflater());
         return (binding.getRoot());
     }
 }
