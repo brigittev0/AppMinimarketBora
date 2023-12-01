@@ -7,7 +7,7 @@ public class UserClient {
 
     //--Ejemplo --> "http://192.132.12.4:8081/user/";
     //--CAMBIAR IP Y PUERTO
-    private static String BASE_URL = "http://192.168.0.15:8081/root/";
+    private static String BASE_URL = "http://192.168.18.8:8081/user/";
 
     private ApiService apiService;
 
