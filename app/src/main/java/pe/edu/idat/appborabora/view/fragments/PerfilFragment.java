@@ -20,4 +20,9 @@ public class PerfilFragment extends Fragment {
         binding = FragmentPerfilBinding.inflate(getLayoutInflater());
         return (binding.getRoot());
     }
+
+
+    //PARA OBTENER EL ID DEL USUARIO:
+    //SharedPreferences sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+    //int userId = sharedPref.getInt("user_id", -1);  // Devuelve -1 si "user_id" no existe
 }

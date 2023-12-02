@@ -17,7 +17,7 @@ import pe.edu.idat.appborabora.retrofit.network.ApiService;
 import pe.edu.idat.appborabora.retrofit.network.ToastUtil;
 import pe.edu.idat.appborabora.retrofit.network.UserClient;
 import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
-import pe.edu.idat.appborabora.retrofit.response.User;
+import pe.edu.idat.appborabora.model.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

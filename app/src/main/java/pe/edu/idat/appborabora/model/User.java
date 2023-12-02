@@ -1,4 +1,4 @@
-package pe.edu.idat.appborabora.retrofit.response;
+package pe.edu.idat.appborabora.model;
 
 public class User {
     private String nombres;

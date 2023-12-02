@@ -8,7 +8,7 @@ public class UserClient {
     //--Ejemplo --> "http://192.132.12.4:8081/user/";
     //--CAMBIAR IP Y PUERTO
     //--SOLO AÑADE TU IP - NO CAMBIAR LO DEMAS
-    private static String BASE_URL = "http://(TU IP ):8081/user/";
+    private static String BASE_URL = "http:// TU IP :8081/user/";
 
     private ApiService apiService;
 

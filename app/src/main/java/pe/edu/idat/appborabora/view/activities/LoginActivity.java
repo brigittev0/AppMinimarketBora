@@ -2,7 +2,9 @@ package pe.edu.idat.appborabora.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +21,7 @@ import pe.edu.idat.appborabora.databinding.ActivityLoginBinding;
 import pe.edu.idat.appborabora.retrofit.network.ApiService;
 import pe.edu.idat.appborabora.retrofit.network.UserClient;
 import pe.edu.idat.appborabora.retrofit.request.LoginRequest;
-import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
+import pe.edu.idat.appborabora.retrofit.response.LoginResponse;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
     private ActivityLoginBinding binding;
@@ -56,12 +58,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             ApiService apiService = UserClient.getINSTANCE().getApiService();
 
-            Call<ApiResponse> call = apiService.login(loginRequest);
-            call.enqueue(new Callback<ApiResponse>() {
+            Call<LoginResponse> call = apiService.login(loginRequest);
+            call.enqueue(new Callback<LoginResponse>() {
                 @Override
-                public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                     if (response.isSuccessful()) {
                         ToastUtil.customMensaje(LoginActivity.this, "Inicio de sesión exitoso.");
+
+                        // Guarda el ID del usuario en las preferencias compartidas
+                        SharedPreferences sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt("user_id", response.body().getUserId());
+                        editor.apply();
+
                         setearControles();
                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                         finish();  // Cierra la actividad
@@ -69,10 +78,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     } else {
                         if (response.errorBody() != null) {
                             try {
-                                // Convierte el cuerpo del error a ApiResponse
-                                ApiResponse apiResponse = new Gson().fromJson(response.errorBody().string(), ApiResponse.class);
+                                // Convierte el cuerpo del error a LoginResponse
+                                LoginResponse loginResponse = new Gson().fromJson(response.errorBody().string(), LoginResponse.class);
                                 // Muestra el mensaje del error
-                                ToastUtil.customMensaje(LoginActivity.this, apiResponse.getMessage());
+                                ToastUtil.customMensaje(LoginActivity.this, loginResponse.getMessage());
                                 Log.d("LoginActivity", "Mensaje de error: " + response.errorBody().string());
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -82,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
 
                 @Override
-                public void onFailure(Call<ApiResponse> call, Throwable t) {
+                public void onFailure(Call<LoginResponse> call, Throwable t) {
                     ToastUtil.customMensaje(LoginActivity.this, "Error al hacer la llamada a la API.");
                 }
             });
