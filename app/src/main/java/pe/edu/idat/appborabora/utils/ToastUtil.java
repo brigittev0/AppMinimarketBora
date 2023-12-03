@@ -1,4 +1,4 @@
-package pe.edu.idat.appborabora.retrofit.network;
+package pe.edu.idat.appborabora.utils;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;

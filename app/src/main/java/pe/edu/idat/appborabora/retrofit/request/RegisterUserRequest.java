@@ -1,6 +1,6 @@
-package pe.edu.idat.appborabora.model;
+package pe.edu.idat.appborabora.retrofit.request;
 
-public class User {
+public class RegisterUserRequest {
     private String nombres;
     private String apellidos;
     private Integer docIdentidad;
@@ -8,7 +8,7 @@ public class User {
     private String email;
     private String contrasena;
 
-    public User(String nombres, String apellidos, Integer docIdentidad, Integer telefono, String email, String contrasena) {
+    public RegisterUserRequest(String nombres, String apellidos, Integer docIdentidad, Integer telefono, String email, String contrasena) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.docIdentidad = docIdentidad;
@@ -64,5 +64,4 @@ public class User {
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
-
 }

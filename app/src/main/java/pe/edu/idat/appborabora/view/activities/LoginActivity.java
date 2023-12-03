@@ -1,30 +1,27 @@
 package pe.edu.idat.appborabora.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
-import pe.edu.idat.appborabora.retrofit.network.ToastUtil;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import com.google.gson.Gson;
+import pe.edu.idat.appborabora.retrofit.response.PerfilResponse;
+import pe.edu.idat.appborabora.utils.ToastUtil;
+import pe.edu.idat.appborabora.viewmodel.AuthViewModel;
 
-import java.io.IOException;
 import pe.edu.idat.appborabora.R;
 import pe.edu.idat.appborabora.databinding.ActivityLoginBinding;
-import pe.edu.idat.appborabora.retrofit.network.ApiService;
-import pe.edu.idat.appborabora.retrofit.network.UserClient;
 import pe.edu.idat.appborabora.retrofit.request.LoginRequest;
-import pe.edu.idat.appborabora.retrofit.response.LoginResponse;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
     private ActivityLoginBinding binding;
+    private AuthViewModel authViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,22 +30,59 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         binding.tvolvidarcontrasena.setOnClickListener(this);
         binding.btniniciarsesion.setOnClickListener(this);
 
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        authViewModel.perfilResponseMutableLiveData.observe(this, new Observer<PerfilResponse>() {
+            @Override
+            public void onChanged(PerfilResponse perfilResponse) {
+                manejarRespuestaLogin(perfilResponse);
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.tvolvidarcontrasena) {
             setearControles();
-            startActivity(new Intent(LoginActivity.this, NuevacontraActivity.class));
-            finish();  // Cierra la actividad
+            startActivity(new Intent(LoginActivity.this, UpdatePasswordActivity.class));
+            finish();
         } else if (v.getId() == R.id.btniniciarsesion) {
             iniciarSesion();
         }
     }
 
+    private void manejarRespuestaLogin(PerfilResponse perfilResponse) {
+        if (perfilResponse != null && perfilResponse.getStatus().equals("OK")) {
+            ToastUtil.customMensaje(LoginActivity.this, "Inicio de sesión exitoso.");
+
+            //--SE GUARDA LOS DATOS DEL USUARIO INICIADO
+            SharedPreferences sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("user_id", perfilResponse.getUserId());
+            editor.putString("nombres", perfilResponse.getNombres());
+            editor.putString("apellidos", perfilResponse.getApellidos());
+            editor.putInt("docIdentidad", perfilResponse.getDocIdentidad());
+            editor.putInt("telefono", perfilResponse.getTelefono());
+            editor.putString("email", perfilResponse.getEmail());
+            editor.apply();
+            //--DE ESTA MANERA OBTIENES CUALQUIER DATO DEL PERFIL EN CUALQUIER PARTE DEL PROYECTO
+            //SharedPreferences sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+            //int userId = sharedPref.getInt("user_id", 0);  // El segundo parámetro es un valor predeterminado que se devuelve si no se encuentra "user_id"
+
+            setearControles();
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();  // Cierra la actividad
+        } else {
+            String mensaje = perfilResponse != null ? perfilResponse.getMessage() : "Error al hacer la llamada a la API.";
+            ToastUtil.customMensaje(LoginActivity.this, mensaje);
+        }
+    }
+
+    //--
+
     private void iniciarSesion(){
         if(validarFormulario()){
-
             String email = binding.tEmail.getText().toString();
             String contrasena = binding.tPassword.getText().toString();
 
@@ -56,45 +90,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             loginRequest.setEmail(email);
             loginRequest.setContrasena(contrasena);
 
-            ApiService apiService = UserClient.getINSTANCE().getApiService();
-
-            Call<LoginResponse> call = apiService.login(loginRequest);
-            call.enqueue(new Callback<LoginResponse>() {
-                @Override
-                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                    if (response.isSuccessful()) {
-                        ToastUtil.customMensaje(LoginActivity.this, "Inicio de sesión exitoso.");
-
-                        // Guarda el ID del usuario en las preferencias compartidas
-                        SharedPreferences sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putInt("user_id", response.body().getUserId());
-                        editor.apply();
-
-                        setearControles();
-                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                        finish();  // Cierra la actividad
-
-                    } else {
-                        if (response.errorBody() != null) {
-                            try {
-                                // Convierte el cuerpo del error a LoginResponse
-                                LoginResponse loginResponse = new Gson().fromJson(response.errorBody().string(), LoginResponse.class);
-                                // Muestra el mensaje del error
-                                ToastUtil.customMensaje(LoginActivity.this, loginResponse.getMessage());
-                                Log.d("LoginActivity", "Mensaje de error: " + response.errorBody().string());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<LoginResponse> call, Throwable t) {
-                    ToastUtil.customMensaje(LoginActivity.this, "Error al hacer la llamada a la API.");
-                }
-            });
+            authViewModel.login(loginRequest);
         }
     }
 

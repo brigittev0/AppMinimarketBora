@@ -16,10 +16,10 @@
         tools:targetApi="31"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".view.activities.NuevacontraActivity"
+            android:name=".view.activities.UpdatePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".view.activities.RegistroActivity"
+            android:name=".view.activities.RegisterUserActivity"
             android:exported="false" />
         <activity
             android:name=".view.activities.HomeActivity"

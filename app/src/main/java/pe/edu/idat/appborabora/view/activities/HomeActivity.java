@@ -1,8 +1,11 @@
 package pe.edu.idat.appborabora.view.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -37,8 +40,25 @@ public class HomeActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+
+        //Codigo para visualizar el nombre y correo del usuario inicializado
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = headerView.findViewById(R.id.nav_header_usuario);
+        TextView navUserEmail = headerView.findViewById(R.id.nav_header_email);
+
+        SharedPreferences sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String nombreUsuario = sharedPref.getString("nombres", null);
+        String correoUsuario = sharedPref.getString("email", null);
+
+        navUsername.setText(nombreUsuario);
+        navUserEmail.setText(correoUsuario);
+
+        //--
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
