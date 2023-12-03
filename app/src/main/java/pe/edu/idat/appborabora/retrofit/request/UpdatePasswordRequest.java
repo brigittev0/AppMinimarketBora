@@ -1,12 +1,12 @@
 package pe.edu.idat.appborabora.retrofit.request;
 
-public class ResetPasswordRequest {
+public class UpdatePasswordRequest {
     private String email;
     private String oldPassword;
     private String newPassword;
 
 
-    public ResetPasswordRequest(String email, String oldPassword, String newPassword) {
+    public UpdatePasswordRequest(String email, String oldPassword, String newPassword) {
         this.email = email;
         this.oldPassword = oldPassword;
         this.newPassword = newPassword;

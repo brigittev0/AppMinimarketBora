@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
 
         } else if (v.getId() == R.id.tvregistro) {
-            startActivity(new Intent(MainActivity.this, RegistroActivity.class));
+            startActivity(new Intent(MainActivity.this, RegisterUserActivity.class));
         }
     }
 }

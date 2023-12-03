@@ -1,35 +1,38 @@
 package pe.edu.idat.appborabora.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-
-import com.google.gson.Gson;
-
-import java.io.IOException;
 
 import pe.edu.idat.appborabora.R;
 import pe.edu.idat.appborabora.databinding.ActivityRegistroBinding;
-import pe.edu.idat.appborabora.retrofit.network.ApiService;
-import pe.edu.idat.appborabora.retrofit.network.ToastUtil;
-import pe.edu.idat.appborabora.retrofit.network.UserClient;
+import pe.edu.idat.appborabora.retrofit.request.RegisterUserRequest;
+import pe.edu.idat.appborabora.utils.ToastUtil;
 import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
-import pe.edu.idat.appborabora.model.User;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import pe.edu.idat.appborabora.viewmodel.AuthViewModel;
 
-public class RegistroActivity extends AppCompatActivity implements View.OnClickListener{
+public class RegisterUserActivity extends AppCompatActivity implements View.OnClickListener{
     private ActivityRegistroBinding binding;
+    private AuthViewModel authViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityRegistroBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.btncrear.setOnClickListener(this);
+
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        authViewModel.registerResponseMutableLiveData.observe(this, new Observer<ApiResponse>() {
+            @Override
+            public void onChanged(ApiResponse apiResponse) {
+                manejarRespuestaRegistro(apiResponse);
+            }
+        });
     }
 
     @Override
@@ -40,7 +43,7 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
     }
     private void registrarUsuario(){
         if(validarFormulario()){
-            User user = new User(
+            RegisterUserRequest registerUserRequest = new RegisterUserRequest(
                     binding.tNom.getText().toString(),
                     binding.tApellido.getText().toString(),
                     Integer.parseInt(binding.tDni.getText().toString()),
@@ -49,39 +52,22 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
                     binding.tPassw.getText().toString()
             );
 
-            ApiService apiService = UserClient.getINSTANCE().getApiService();
+            authViewModel.registerUser(registerUserRequest);
+        }
+    }
 
-            Call<ApiResponse> call = apiService.register(user);
-            call.enqueue(new Callback<ApiResponse>() {
+    private void manejarRespuestaRegistro(ApiResponse apiResponse) {
+        if (apiResponse != null && apiResponse.getStatus().equals("CREATED")) {
+            ToastUtil.customMensaje(RegisterUserActivity.this, "Registro exitoso.");
 
-                @Override
-                public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                    if (response.isSuccessful()) {
-                        ToastUtil.customMensaje(RegistroActivity.this, "Registro exitoso.");
-                        setearControles();
-                        startActivity(new Intent(RegistroActivity.this, LoginActivity.class));
-                        finish();  // Cierra la actividad
-
-                    } else {
-                        if (response.errorBody() != null) {
-                            try {
-                                // Convierte el cuerpo del error a ApiResponse
-                                ApiResponse apiResponse = new Gson().fromJson(response.errorBody().string(), ApiResponse.class);
-                                // Muestra el mensaje del error
-                                ToastUtil.customMensaje(RegistroActivity.this, apiResponse.getMessage());
-                                Log.d("RegistroActivity", "Mensaje de error: " + response.errorBody().string());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ApiResponse> call, Throwable t) {
-                    ToastUtil.customMensaje(RegistroActivity.this, "Error al hacer la llamada a la API.");
-                }
-            });
+            setearControles();
+            Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();  // Cierra la actividad
+        } else {
+            String mensaje = apiResponse != null ? apiResponse.getMessage() : "Error al hacer la llamada a la API.";
+            ToastUtil.customMensaje(RegisterUserActivity.this, mensaje);
         }
     }
 

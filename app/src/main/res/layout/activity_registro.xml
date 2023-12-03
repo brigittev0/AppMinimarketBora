@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@drawable/registro"
-    tools:context=".view.activities.RegistroActivity">
+    tools:context=".view.activities.RegisterUserActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

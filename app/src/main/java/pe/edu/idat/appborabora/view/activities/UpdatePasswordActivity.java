@@ -1,35 +1,38 @@
 package pe.edu.idat.appborabora.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-
-import com.google.gson.Gson;
-
-import java.io.IOException;
 
 import pe.edu.idat.appborabora.R;
 import pe.edu.idat.appborabora.databinding.ActivityNuevacontraBinding;
-import pe.edu.idat.appborabora.retrofit.network.ApiService;
-import pe.edu.idat.appborabora.retrofit.network.ToastUtil;
-import pe.edu.idat.appborabora.retrofit.network.UserClient;
-import pe.edu.idat.appborabora.retrofit.request.ResetPasswordRequest;
+import pe.edu.idat.appborabora.utils.ToastUtil;
+import pe.edu.idat.appborabora.retrofit.request.UpdatePasswordRequest;
 import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import pe.edu.idat.appborabora.viewmodel.AuthViewModel;
 
-public class NuevacontraActivity extends AppCompatActivity implements View.OnClickListener{
+public class UpdatePasswordActivity extends AppCompatActivity implements View.OnClickListener{
     private ActivityNuevacontraBinding binding;
+    private AuthViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityNuevacontraBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.btnActualizar.setOnClickListener(this);
+
+        viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        viewModel.updatePasswordResponseMutableLiveData.observe(this, new Observer<ApiResponse>() {
+            @Override
+            public void onChanged(ApiResponse apiResponse) {
+                manejarRptaUpdatePass(apiResponse);
+            }
+        });
     }
 
     @Override
@@ -44,43 +47,23 @@ public class NuevacontraActivity extends AppCompatActivity implements View.OnCli
             String oldPass = binding.txtOldPassword.getText().toString().trim();
             String newPass = binding.txtNewPassword.getText().toString().trim();
 
-            ResetPasswordRequest request = new ResetPasswordRequest(email, oldPass, newPass);
+            UpdatePasswordRequest request = new UpdatePasswordRequest(email, oldPass, newPass);
+            viewModel.updatePassword(request);
+        }
+    }
 
-            ApiService apiService = UserClient.getINSTANCE().getApiService();
+    private void manejarRptaUpdatePass(ApiResponse apiResponse) {
+        if ((apiResponse != null && apiResponse.getStatus().equals("OK"))) {
+            ToastUtil.customMensaje(UpdatePasswordActivity.this, "Contraseña actualizada con éxito.");
 
-            Call<ApiResponse> call = apiService.updatePassword(request);
-            call.enqueue(new Callback<ApiResponse>() {
-                @Override
-                public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                    if (response.isSuccessful()) {
-                        ToastUtil.customMensaje(NuevacontraActivity.this, "Contraseña actualizada con éxito.");
-                        setearControles();
-                        Intent intent = new Intent(NuevacontraActivity.this, LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();  // Cierra la actividad
-
-                    } else {
-                        if (response.errorBody() != null) {
-                            try {
-                                // Convierte el cuerpo del error a ApiResponse
-                                ApiResponse apiResponse = new Gson().fromJson(response.errorBody().string(), ApiResponse.class);
-                                // Muestra el mensaje del error
-                                ToastUtil.customMensaje(NuevacontraActivity.this, apiResponse.getMessage());
-                                Log.d("UpdatePassActivity", "Mensaje de error: " + response.errorBody().string());
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ApiResponse> call, Throwable t) {
-                    ToastUtil.customMensaje(NuevacontraActivity.this, "Error al hacer la llamada a la API.");
-                }
-            });
+            setearControles();
+            Intent intent = new Intent(UpdatePasswordActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();  // Cierra la actividad
+        } else {
+            String mensaje = apiResponse != null ? apiResponse.getMessage() : "Error al hacer la llamada a la API.";
+            ToastUtil.customMensaje(UpdatePasswordActivity.this, mensaje);
         }
     }
 
