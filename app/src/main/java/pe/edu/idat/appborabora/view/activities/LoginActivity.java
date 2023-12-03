@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import pe.edu.idat.appborabora.retrofit.response.PerfilResponse;
@@ -69,6 +70,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //int userId = sharedPref.getInt("user_id", 0);  // El segundo parámetro es un valor predeterminado que se devuelve si no se encuentra "user_id"
 
             setearControles();
+
+            //---
+            //--
+            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+            int userId = sharedPreferences.getInt("user_id", 0);
+
+            // Imprime el userId en Logcat
+            Log.d("MyApp", "UserId: " + userId);
+            //--
+
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

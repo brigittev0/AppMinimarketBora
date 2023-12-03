@@ -51,4 +51,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="titulohc">Historial de Compras</string>
     <string name="perfil">Editar Perfil</string>
+    <string name="txtNroCompra">Compra Nº:</string>
+    <string name="txtFCompra">Fecha de compra:</string>
+    <string name="txtMPago">Método de pago:</string>
+    <string name="txtTotal">Total:</string>
 </resources>
