@@ -65,20 +65,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             editor.putInt("telefono", perfilResponse.getTelefono());
             editor.putString("email", perfilResponse.getEmail());
             editor.apply();
-            //--DE ESTA MANERA OBTIENES CUALQUIER DATO DEL PERFIL EN CUALQUIER PARTE DEL PROYECTO
-            //SharedPreferences sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
-            //int userId = sharedPref.getInt("user_id", 0);  // El segundo parámetro es un valor predeterminado que se devuelve si no se encuentra "user_id"
+
 
             setearControles();
-
-            //---
-            //--
+            //--DE ESTA MANERA OBTIENES CUALQUIER DATO DEL PERFIL EN CUALQUIER PARTE DEL PROYECTO
+            //---PRUEBA DE QUE EN EL LOG SE VISUALIZA EL ID DEL USER INICIADO
             SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
             int userId = sharedPreferences.getInt("user_id", 0);
 
             // Imprime el userId en Logcat
             Log.d("MyApp", "UserId: " + userId);
-            //--
+            //-------------
 
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

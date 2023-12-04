@@ -1,4 +1,4 @@
-package pe.edu.idat.appborabora;
+package pe.edu.idat.appborabora.adapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -10,26 +10,26 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import pe.edu.idat.appborabora.databinding.ItemCompraBinding;
-import pe.edu.idat.appborabora.retrofit.response.CompraResponse;
+import pe.edu.idat.appborabora.databinding.ItemHistorialcompraBinding;
+import pe.edu.idat.appborabora.retrofit.response.HistorialComprasResponse;
 
-public class CompraAdapter extends RecyclerView.Adapter<CompraAdapter.ViewHolder> {
+public class HistorialComprasAdapter extends RecyclerView.Adapter<HistorialComprasAdapter.ViewHolder> {
 
-    private ArrayList<CompraResponse> lista = new ArrayList<>();
+    private ArrayList<HistorialComprasResponse> lista = new ArrayList<>();
 
     @NonNull
     @Override
-    public CompraAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HistorialComprasAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(
-                ItemCompraBinding.inflate(
+                ItemHistorialcompraBinding.inflate(
                         LayoutInflater.from(parent.getContext()),
                         parent, false)
         );
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CompraAdapter.ViewHolder holder, int position) {
-        final CompraResponse objCompra = lista.get(position);
+    public void onBindViewHolder(@NonNull HistorialComprasAdapter.ViewHolder holder, int position) {
+        final HistorialComprasResponse objCompra = lista.get(position);
         // Actualiza estos campos con los campos de tu clase CompraResponse
         String idConTextoAdicional = "1264608726765-0" + objCompra.getId();
         holder.binding.tvnrocompra.setText(idConTextoAdicional);
@@ -47,15 +47,15 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraAdapter.ViewHolder
         return lista.size();
     }
 
-    public void setData(ArrayList<CompraResponse> data){
+    public void setData(ArrayList<HistorialComprasResponse> data){
         lista.addAll(data);
         notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ItemCompraBinding binding;
-        public ViewHolder(ItemCompraBinding itemView) {
+        ItemHistorialcompraBinding binding;
+        public ViewHolder(ItemHistorialcompraBinding itemView) {
             super(itemView.getRoot());
             binding = itemView;
         }
