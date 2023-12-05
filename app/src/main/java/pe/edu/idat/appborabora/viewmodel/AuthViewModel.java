@@ -14,6 +14,7 @@ import java.util.List;
 
 import pe.edu.idat.appborabora.retrofit.network.BoraBoraClient;
 import pe.edu.idat.appborabora.retrofit.request.LoginRequest;
+import pe.edu.idat.appborabora.retrofit.request.PerfilRequest;
 import pe.edu.idat.appborabora.retrofit.request.UpdatePasswordRequest;
 import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
 import pe.edu.idat.appborabora.retrofit.request.RegisterUserRequest;
@@ -27,9 +28,8 @@ public class AuthViewModel extends AndroidViewModel {
     public MutableLiveData<ApiResponse> registerResponseMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<ApiResponse> updatePasswordResponseMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<PerfilResponse> perfilResponseMutableLiveData = new MutableLiveData<>();
-
     public MutableLiveData<List<HistorialComprasResponse>> compraResponseMutableLiveData = new MutableLiveData<>();
-
+    public MutableLiveData<ApiResponse> updatePerfilResponseLiveData = new MutableLiveData<>();
     public AuthViewModel(@NonNull Application application) {
         super(application);
     }
@@ -100,6 +100,32 @@ public class AuthViewModel extends AndroidViewModel {
                 t.printStackTrace();
             }
         });
+    }
+
+    public void updatePerfil(int userId, PerfilRequest perfilRequest) {
+        new BoraBoraClient().getInstance().updateUser(userId, perfilRequest).enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful()) {
+                    updatePerfilResponseLiveData.setValue(response.body());
+                } else {
+                    try {
+                        ApiResponse errorResponse = new Gson().fromJson(response.errorBody().string(), ApiResponse.class);
+                        updatePerfilResponseLiveData.setValue(errorResponse);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public LiveData<ApiResponse> observeUpdatePerfilResponse() {
+        return updatePerfilResponseLiveData;
     }
 
     //--COMPRA
