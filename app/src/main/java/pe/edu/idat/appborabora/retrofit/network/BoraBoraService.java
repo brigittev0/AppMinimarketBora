@@ -7,8 +7,10 @@ import pe.edu.idat.appborabora.retrofit.request.LoginRequest;
 import pe.edu.idat.appborabora.retrofit.request.RegisterUserRequest;
 import pe.edu.idat.appborabora.retrofit.request.UpdatePasswordRequest;
 import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
+import pe.edu.idat.appborabora.retrofit.response.CategoriaResponse;
 import pe.edu.idat.appborabora.retrofit.response.HistorialComprasResponse;
 import pe.edu.idat.appborabora.retrofit.response.PerfilResponse;
+import pe.edu.idat.appborabora.retrofit.response.ProductoResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -30,4 +32,10 @@ public interface BoraBoraService {
     //--COMPRAS
     @GET("compras/user/{userId}")
     Call<List<HistorialComprasResponse>> getComprasUser(@Path("userId") int userId);
+
+    @GET("categorias/listar")
+    Call<List<CategoriaResponse>> listarCategoria();
+
+    @GET("productos/categoria/{categoriaId}")
+    Call<List<ProductoResponse>> findByCategoriaId(@Path("categoriaId") int categoriaId);
 }
