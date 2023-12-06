@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BoraBoraClient {
-    private static final String BASE_URL = "http://192.168.0.15:8081/borabora/";
+    private static final String BASE_URL = "http://192.168.18.8:8081/borabora/";
     private BoraBoraService boraboraService;
 
     public BoraBoraClient(){

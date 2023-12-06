@@ -18,13 +18,14 @@ import java.util.List;
 import pe.edu.idat.appborabora.adapter.HistorialComprasAdapter;
 import pe.edu.idat.appborabora.databinding.FragmentHistorialCompraBinding;
 import pe.edu.idat.appborabora.retrofit.response.HistorialComprasResponse;
+import pe.edu.idat.appborabora.utils.ToastUtil;
 import pe.edu.idat.appborabora.viewmodel.AuthViewModel;
 
 public class HistorialCompraFragment extends Fragment {
 
     private FragmentHistorialCompraBinding binding;
     private HistorialComprasAdapter compraAdapter = new HistorialComprasAdapter();
-    private AuthViewModel viewModel; // Añade una instancia de tu ViewModel
+    private AuthViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,14 +39,17 @@ public class HistorialCompraFragment extends Fragment {
 
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         int userId = sharedPreferences.getInt("user_id", 0);
-
-        viewModel.getComprasUser(userId).observe(getViewLifecycleOwner(), new Observer<List<HistorialComprasResponse>>() {
-            @Override
-            public void onChanged(List<HistorialComprasResponse> historialComprasResponse) {
-                compraAdapter.setData(new ArrayList<>(historialComprasResponse)); // Actualiza los datos de tu adaptador
-            }
-        });
-
+            viewModel.getComprasUser(userId).observe(getViewLifecycleOwner(), new Observer<List<HistorialComprasResponse>>() {
+                @Override
+                public void onChanged(List<HistorialComprasResponse> historialComprasResponse) {
+                    if (historialComprasResponse != null && !historialComprasResponse.isEmpty()) {
+                        compraAdapter.setData(new ArrayList<>(historialComprasResponse)); // Actualiza los datos de tu adaptador
+                    } else {
+                        // Maneja el caso en que la lista de compras es nula o vacía
+                        ToastUtil.customMensaje(requireActivity(), "No hay historial de compras");
+                    }
+                }
+            });
         return binding.getRoot();
     }
 }

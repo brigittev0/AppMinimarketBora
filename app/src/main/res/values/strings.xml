@@ -55,4 +55,5 @@
     <string name="txtFCompra">Fecha de compra:</string>
     <string name="txtMPago">Método de pago:</string>
     <string name="txtTotal">Total:</string>
+    <string name="titulodhc">Mi compra</string>
 </resources>

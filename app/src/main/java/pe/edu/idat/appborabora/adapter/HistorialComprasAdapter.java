@@ -48,6 +48,7 @@ public class HistorialComprasAdapter extends RecyclerView.Adapter<HistorialCompr
     }
 
     public void setData(ArrayList<HistorialComprasResponse> data){
+        lista.clear(); 
         lista.addAll(data);
         notifyDataSetChanged();
     }
