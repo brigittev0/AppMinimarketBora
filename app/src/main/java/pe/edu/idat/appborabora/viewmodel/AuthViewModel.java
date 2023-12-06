@@ -34,13 +34,11 @@ public class AuthViewModel extends AndroidViewModel {
     public MutableLiveData<ApiResponse> updatePasswordResponseMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<PerfilResponse> perfilResponseMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<List<HistorialComprasResponse>> compraResponseMutableLiveData = new MutableLiveData<>();
-<<<<<<< HEAD
+
     public MutableLiveData<List<CategoriaResponse>> categoriaResponsemMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<List<ProductoResponse>> productosLiveData = new MutableLiveData<>();
 
-=======
     public MutableLiveData<ApiResponse> updatePerfilResponseLiveData = new MutableLiveData<>();
->>>>>>> 9f96cc11109642936ae670bd67e2dbbbbd78d798
     public AuthViewModel(@NonNull Application application) {
         super(application);
     }
