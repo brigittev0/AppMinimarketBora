@@ -47,6 +47,7 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.View
     }
 
     public void setData(ArrayList<CategoriaResponse> data){
+        lista.clear();
         lista.addAll(data);
         notifyDataSetChanged();
     }
