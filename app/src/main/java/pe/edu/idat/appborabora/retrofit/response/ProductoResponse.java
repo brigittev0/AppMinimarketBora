@@ -6,19 +6,29 @@ public class ProductoResponse {
     private String fvencimiento;
     private String marca;
     private String nombre;
+    private String imagen;
     private double precio;
     private int stock;
     private int categoria_id;
 
-    public ProductoResponse(int id, String descripcion, String fvencimiento, String marca, String nombre, double precio, int stock, int categoria_id) {
+    public ProductoResponse(int id, String descripcion, String fvencimiento, String marca, String nombre, String imagen, double precio, int stock, int categoria_id) {
         this.id = id;
         this.descripcion = descripcion;
         this.fvencimiento = fvencimiento;
         this.marca = marca;
         this.nombre = nombre;
+        this.imagen = imagen;
         this.precio = precio;
         this.stock = stock;
         this.categoria_id = categoria_id;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     public int getId() {

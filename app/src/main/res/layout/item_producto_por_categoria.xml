@@ -13,25 +13,25 @@
         android:layout_margin="5dp"
         android:elevation="5dp">
 
-        <ImageView
-            android:id="@+id/imgPlatilloC"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/abarrotes" />
-
-        <RelativeLayout
-            android:layout_width="270dp"
-            android:layout_height="110dp"
-            android:layout_gravity="end"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="10dp">
 
+            <ImageView
+                android:id="@+id/imgProducto"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/abarrotes" />
+
             <TextView
-                android:id="@+id/namePlatilloC"
+                android:id="@+id/nombreProducto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal"
                 android:fontFamily="sans-serif-medium"
                 android:text="Aceite Primor"
                 android:textColor="#000"
@@ -42,15 +42,15 @@
                 android:id="@+id/iv1"
                 android:layout_width="120dp"
                 android:layout_height="18dp"
-                android:layout_below="@id/namePlatilloC"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/rating_orange_small" />
 
             <TextView
-                android:id="@+id/txtPricePlatilloC"
+                android:id="@+id/txtPrecioProducto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/iv1"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="S/. 18.00"
@@ -58,12 +58,11 @@
                 android:textSize="16dp" />
 
             <Button
-                android:id="@+id/btnOrdenarPC"
+                android:id="@+id/btnOrdenar"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="#FF8500"
                 android:fontFamily="sans-serif-medium"
                 android:text="Ordenar"
@@ -71,6 +70,6 @@
                 android:textSize="11dp"
                 android:textStyle="bold" />
 
-        </RelativeLayout>
+        </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
