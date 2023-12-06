@@ -29,4 +29,9 @@
         android:name="pe.edu.idat.appborabora.view.fragments.PerfilFragment"
         android:label="Perfil"
         tools:layout="@layout/fragment_perfil" />
+    <fragment
+        android:id="@+id/listarProdCategoriaFragment"
+        android:name="pe.edu.idat.appborabora.view.fragments.ListarProdCategoriaFragment"
+        android:label="Producto por Categoria"
+        tools:layout="@layout/fragment_listar_prod_categoria" />
 </navigation>

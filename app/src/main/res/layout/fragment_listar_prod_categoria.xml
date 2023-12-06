@@ -7,27 +7,12 @@
     android:layout_height="match_parent"
     android:background="#2e2e2e"
     android:orientation="vertical"
-    tools:context=".ListarProductoPorCategoriaActivity">
+    tools:context=".view.fragments.ListarProdCategoriaFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/purple_500"
-                app:navigationIcon="@drawable/ic_volver_atras"
-                app:title="Productos por Categoría"
-                app:titleTextColor="@color/white" />
-        </com.google.android.material.appbar.AppBarLayout>
     </LinearLayout>
 
     <ScrollView

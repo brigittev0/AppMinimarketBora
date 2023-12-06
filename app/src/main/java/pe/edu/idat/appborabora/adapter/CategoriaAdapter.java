@@ -22,6 +22,16 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.View
 
     private ArrayList<CategoriaResponse> lista = new ArrayList<>();
 
+    public interface OnItemClickListener {
+        void onItemClick(CategoriaResponse categoria);
+    }
+
+    private OnItemClickListener listener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     @NonNull
     @Override
     public CategoriaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -31,6 +41,7 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.View
                         parent, false)
         );
     }
+
     @Override
     public void onBindViewHolder(@NonNull CategoriaAdapter.ViewHolder holder, int position) {
         final CategoriaResponse objCategoria = lista.get(position);
@@ -39,6 +50,15 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.View
         Glide.with(holder.itemView.getContext())
                 .load(objCategoria.getImagen())
                 .into(holder.binding.imgCategoria);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(objCategoria);
+                }
+            }
+        });
     }
 
     @Override

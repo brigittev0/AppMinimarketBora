@@ -36,8 +36,10 @@ public class AuthViewModel extends AndroidViewModel {
     public MutableLiveData<List<HistorialComprasResponse>> compraResponseMutableLiveData = new MutableLiveData<>();
 
     public MutableLiveData<List<CategoriaResponse>> categoriaResponsemMutableLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<ProductoResponse>> productosLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<ProductoResponse>> productoResponseMutableLiveData = new MutableLiveData<>();
 
+    private BoraBoraClient client = new BoraBoraClient();
+    private BoraBoraService service = client.getInstance();
     public MutableLiveData<ApiResponse> updatePerfilResponseLiveData = new MutableLiveData<>();
     public AuthViewModel(@NonNull Application application) {
         super(application);
@@ -197,25 +199,17 @@ public class AuthViewModel extends AndroidViewModel {
         return categoriaResponsemMutableLiveData;
     }
     //PRODUCTO POR CATEGORIA
-    public LiveData<List<ProductoResponse>> getProductosLiveData() {
-        return productosLiveData;
-    }
-/*
-    public void loadProductosByCategoriaId(int categoriaId) {
-        // Aquí haces la solicitud HTTP a tu endpoint
-        // Esto es solo un ejemplo y puede que necesites ajustarlo para que funcione con tu código actual
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://tu-servidor.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+    public LiveData<List<ProductoResponse>> getProductosByCategoriaId(int categoriaId) {
+        MutableLiveData<List<ProductoResponse>> data = new MutableLiveData<>();
 
-        BoraBoraService service = retrofit.create(BoraBoraService.class);
         Call<List<ProductoResponse>> call = service.findByCategoriaId(categoriaId);
         call.enqueue(new Callback<List<ProductoResponse>>() {
             @Override
             public void onResponse(Call<List<ProductoResponse>> call, Response<List<ProductoResponse>> response) {
-                if (response.isSuccessful()) {
-                    productosLiveData.setValue(response.body());
+                if (response.isSuccessful() && response.code() == 200) {
+                    data.setValue(response.body());
+                } else {
+                    // handle the error response here
                 }
             }
 
@@ -224,6 +218,8 @@ public class AuthViewModel extends AndroidViewModel {
                 t.printStackTrace();
             }
         });
-    }*/
+
+        return data;
+    }
 
 }
