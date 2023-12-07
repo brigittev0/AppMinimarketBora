@@ -56,4 +56,8 @@
     <string name="txtMPago">Método de pago:</string>
     <string name="txtTotal">Total:</string>
     <string name="titulodhc">Mi compra</string>
+    <string name="metodopago">Método de Pago</string>
+    <string name="tarjeta">Tarjeta de Credito</string>
+    <string name="TIENDA">Recojo en tienda</string>
+    <string name="infotarjecta">Ingrese la Información de su Tarjeta</string>
 </resources>
