@@ -61,4 +61,5 @@
     <string name="TIENDA">Recojo en tienda</string>
     <string name="infotarjecta">Ingrese la Información de su Tarjeta</string>
     <string name="btnaceptar">Aceptar</string>
+    <string name="stringContacto">Contacto</string>
 </resources>
