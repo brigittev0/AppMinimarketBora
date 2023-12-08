@@ -34,6 +34,7 @@ public class MetodoPagoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Snackbar.make(v, "Elección guardada", Snackbar.LENGTH_SHORT).show();
+                Navigation.findNavController(v).navigate(R.id.compraFragment);
             }
         });
 

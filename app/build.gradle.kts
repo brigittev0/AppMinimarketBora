@@ -48,5 +48,11 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.8.6")
     //Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    // Firebase Authentication
+    implementation ("com.google.firebase:firebase-auth:21.0.1")
+    //Carrusel
+    implementation("com.github.smarteist:autoimageslider:1.4.0")
+    // Google Play services - Authentication
+    implementation ("com.google.android.gms:play-services-auth:19.2.0")
 }
 
