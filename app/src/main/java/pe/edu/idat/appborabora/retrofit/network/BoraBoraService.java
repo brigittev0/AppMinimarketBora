@@ -12,6 +12,7 @@ import pe.edu.idat.appborabora.retrofit.response.CategoriaResponse;
 import pe.edu.idat.appborabora.retrofit.response.HistorialComprasResponse;
 import pe.edu.idat.appborabora.retrofit.response.PerfilResponse;
 import pe.edu.idat.appborabora.retrofit.response.ProductoResponse;
+import pe.edu.idat.appborabora.retrofit.response.TopProductosResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -43,4 +44,8 @@ public interface BoraBoraService {
 
     @GET("productos/categoria/{categoriaId}")
     Call<List<ProductoResponse>> findByCategoriaId(@Path("categoriaId") int categoriaId);
+
+    //--PRODUCTOS
+    @GET("topProductos")
+    Call<List<TopProductosResponse>> topProductos();
 }

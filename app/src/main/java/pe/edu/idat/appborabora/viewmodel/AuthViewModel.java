@@ -23,6 +23,7 @@ import pe.edu.idat.appborabora.retrofit.response.CategoriaResponse;
 import pe.edu.idat.appborabora.retrofit.response.HistorialComprasResponse;
 import pe.edu.idat.appborabora.retrofit.response.PerfilResponse;
 import pe.edu.idat.appborabora.retrofit.response.ProductoResponse;
+import pe.edu.idat.appborabora.retrofit.response.TopProductosResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,7 +37,7 @@ public class AuthViewModel extends AndroidViewModel {
     public MutableLiveData<List<HistorialComprasResponse>> compraResponseMutableLiveData = new MutableLiveData<>();
 
     public MutableLiveData<List<CategoriaResponse>> categoriaResponsemMutableLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<ProductoResponse>> productoResponseMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<TopProductosResponse>> productoResponseMutableLiveData = new MutableLiveData<>();
 
     private BoraBoraClient client = new BoraBoraClient();
     private BoraBoraService service = client.getInstance();
@@ -220,6 +221,33 @@ public class AuthViewModel extends AndroidViewModel {
         });
 
         return data;
+    }
+
+    public LiveData<List<TopProductosResponse>> listarTopProductos(){
+        new BoraBoraClient().getInstance().topProductos().enqueue(new Callback<List<TopProductosResponse>>() {
+            @Override
+            public void onResponse(Call<List<TopProductosResponse>> call, Response<List<TopProductosResponse>> response) {
+                if (response.isSuccessful()) {
+                    productoResponseMutableLiveData.setValue(response.body());
+                } else {
+                    try {
+                        String errorResponse = response.errorBody().string();
+                        if ("No se encontraron productos".equals(errorResponse)) {
+                            productoResponseMutableLiveData.setValue(null);
+                        } else {
+                            System.out.println("Error: " + errorResponse);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<List<TopProductosResponse>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+        return productoResponseMutableLiveData;
     }
 
 }
