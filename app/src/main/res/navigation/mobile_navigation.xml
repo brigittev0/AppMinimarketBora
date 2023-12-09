@@ -45,7 +45,7 @@
         android:label="Tarjeta"
         tools:layout="@layout/fragment_metodo_pago_tarjeta" />
     <fragment
-        android:id="@+id/contactoFragment"
+        android:id="@+id/contactoFragment2"
         android:name="pe.edu.idat.appborabora.view.fragments.ContactoFragment"
-        android:label="@string/stringContacto" />
+        android:label="ContactoFragment" />
 </navigation>

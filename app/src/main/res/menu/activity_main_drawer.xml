@@ -29,7 +29,7 @@
         <item android:title="Información">
         <menu>
             <item
-                android:id="@+id/contactoFragment"
+                android:id="@+id/contactoFragment2"
                 android:icon="@drawable/baseline_person_24"
                 android:title="@string/stringContacto" />
         </menu>
