@@ -19,6 +19,7 @@ import pe.edu.idat.appborabora.retrofit.request.PerfilRequest;
 import pe.edu.idat.appborabora.retrofit.request.UpdatePasswordRequest;
 import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
 import pe.edu.idat.appborabora.retrofit.request.RegisterUserRequest;
+import pe.edu.idat.appborabora.retrofit.response.CarritoProdResponse;
 import pe.edu.idat.appborabora.retrofit.response.CategoriaResponse;
 import pe.edu.idat.appborabora.retrofit.response.HistorialComprasResponse;
 import pe.edu.idat.appborabora.retrofit.response.PerfilResponse;
@@ -39,9 +40,12 @@ public class AuthViewModel extends AndroidViewModel {
     public MutableLiveData<List<CategoriaResponse>> categoriaResponsemMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<List<TopProductosResponse>> productoResponseMutableLiveData = new MutableLiveData<>();
 
+    private MutableLiveData<List<CarritoProdResponse>> carritopResponseMutableLiveData = new MutableLiveData<>();
+
     private BoraBoraClient client = new BoraBoraClient();
     private BoraBoraService service = client.getInstance();
     public MutableLiveData<ApiResponse> updatePerfilResponseLiveData = new MutableLiveData<>();
+
     public AuthViewModel(@NonNull Application application) {
         super(application);
     }
@@ -69,6 +73,7 @@ public class AuthViewModel extends AndroidViewModel {
             }
         });
     }
+
     public void registerUser(RegisterUserRequest registerUserRequest) {
         new BoraBoraClient().getInstance().register(registerUserRequest).enqueue(new Callback<ApiResponse>() {
             @Override
@@ -91,6 +96,7 @@ public class AuthViewModel extends AndroidViewModel {
             }
         });
     }
+
     public void updatePassword(UpdatePasswordRequest updatePasswordRequest) {
         new BoraBoraClient().getInstance().updatePassword(updatePasswordRequest).enqueue(new Callback<ApiResponse>() {
             @Override
@@ -129,6 +135,7 @@ public class AuthViewModel extends AndroidViewModel {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 t.printStackTrace();
@@ -149,7 +156,8 @@ public class AuthViewModel extends AndroidViewModel {
                     compraResponseMutableLiveData.setValue(response.body());
                 } else {
                     try {
-                        List<HistorialComprasResponse> errorResponse = new Gson().fromJson(response.errorBody().string(), new TypeToken<List<HistorialComprasResponse>>(){}.getType());
+                        List<HistorialComprasResponse> errorResponse = new Gson().fromJson(response.errorBody().string(), new TypeToken<List<HistorialComprasResponse>>() {
+                        }.getType());
                         if (!errorResponse.isEmpty() && "No se encontraron compras para el usuario".equals(errorResponse.get(0).getMessage())) {
                             // maneja el caso en que no se encontraron compras
                             compraResponseMutableLiveData.setValue(null);
@@ -196,9 +204,10 @@ public class AuthViewModel extends AndroidViewModel {
             public void onFailure(Call<List<CategoriaResponse>> call, Throwable t) {
                 t.printStackTrace();
             }
-    });
+        });
         return categoriaResponsemMutableLiveData;
     }
+
     //PRODUCTO POR CATEGORIA
     public LiveData<List<ProductoResponse>> getProductosByCategoriaId(int categoriaId) {
         MutableLiveData<List<ProductoResponse>> data = new MutableLiveData<>();
@@ -224,7 +233,7 @@ public class AuthViewModel extends AndroidViewModel {
     }
 
 
-    public LiveData<List<TopProductosResponse>> listarTopProductos(){
+    public LiveData<List<TopProductosResponse>> listarTopProductos() {
         new BoraBoraClient().getInstance().topProductos().enqueue(new Callback<List<TopProductosResponse>>() {
             @Override
             public void onResponse(Call<List<TopProductosResponse>> call, Response<List<TopProductosResponse>> response) {
@@ -243,6 +252,7 @@ public class AuthViewModel extends AndroidViewModel {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<List<TopProductosResponse>> call, Throwable t) {
                 t.printStackTrace();
@@ -251,5 +261,33 @@ public class AuthViewModel extends AndroidViewModel {
         return productoResponseMutableLiveData;
     }
 
+    public LiveData<List<CarritoProdResponse>> ListCarritoProd(int userId) {
+        MutableLiveData<List<CarritoProdResponse>> data = new MutableLiveData<>();
 
+        Call<List<CarritoProdResponse>> call = service.getCarritoProductos(userId);
+        call.enqueue(new Callback<List<CarritoProdResponse>>() {
+            @Override
+            public void onResponse(Call<List<CarritoProdResponse>> call, Response<List<CarritoProdResponse>> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    data.setValue(response.body());
+                } else {
+                    // handle the error response here
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CarritoProdResponse>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+        return data;
+    }
 }
+
+
+
+
+
+
+

@@ -36,3 +36,4 @@ public class UpdatePasswordRequest {
         this.newPassword = newPassword;
     }
 }
+
