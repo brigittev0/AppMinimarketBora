@@ -25,7 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import pe.edu.idat.appborabora.R;
 import pe.edu.idat.appborabora.databinding.ActivityHomeBinding;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityHomeBinding binding;
@@ -37,7 +37,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         NavigationView navigationView = binding.navView;
-        navigationView.setNavigationItemSelectedListener(this);
         setSupportActionBar(binding.appBarHome.toolbar);
         binding.appBarHome.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,22 +89,4 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 || super.onSupportNavigateUp();
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.logout) {
-            // Cierra la sesión en Firebase
-            FirebaseAuth.getInstance().signOut();
-
-            // Redirige al usuario a la pantalla de inicio de sesión
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }

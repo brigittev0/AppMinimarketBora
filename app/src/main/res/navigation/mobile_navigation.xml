@@ -48,4 +48,9 @@
         android:id="@+id/contactoFragment2"
         android:name="pe.edu.idat.appborabora.view.fragments.ContactoFragment"
         android:label="ContactoFragment" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="pe.edu.idat.appborabora.view.activities.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
 </navigation>
