@@ -11,4 +11,6 @@
     <color name="fondo">#f8f1ee</color>
     <color name="rojo">#FF0000</color>
     <color name="purple_mas_oscuro">#5e60a7</color>
+
+    <color name="gris_oscuro">#777676</color>
 </resources>

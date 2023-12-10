@@ -20,8 +20,10 @@ import pe.edu.idat.appborabora.retrofit.request.UpdatePasswordRequest;
 import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
 import pe.edu.idat.appborabora.retrofit.request.RegisterUserRequest;
 import pe.edu.idat.appborabora.retrofit.response.CategoriaResponse;
+import pe.edu.idat.appborabora.retrofit.response.CompraResponse;
 import pe.edu.idat.appborabora.retrofit.response.HistorialComprasResponse;
 import pe.edu.idat.appborabora.retrofit.response.PerfilResponse;
+import pe.edu.idat.appborabora.retrofit.response.ProductoCompraResponse;
 import pe.edu.idat.appborabora.retrofit.response.ProductoResponse;
 import pe.edu.idat.appborabora.retrofit.response.TopProductosResponse;
 import retrofit2.Call;
@@ -140,7 +142,7 @@ public class AuthViewModel extends AndroidViewModel {
         return updatePerfilResponseLiveData;
     }
 
-    //--COMPRA
+    //-- HISTORIAL DE COMPRAS SEGUN USER ID
     public LiveData<List<HistorialComprasResponse>> getComprasUser(int userId) {
         new BoraBoraClient().getInstance().getComprasUser(userId).enqueue(new Callback<List<HistorialComprasResponse>>() {
             @Override
@@ -171,7 +173,7 @@ public class AuthViewModel extends AndroidViewModel {
         return compraResponseMutableLiveData;
     }
 
-    //categoria
+    //-- LISTAR CATEGORIAS
     public LiveData<List<CategoriaResponse>> listarCategoria() {
         new BoraBoraClient().getInstance().listarCategoria().enqueue(new Callback<List<CategoriaResponse>>() {
             @Override
@@ -199,7 +201,8 @@ public class AuthViewModel extends AndroidViewModel {
     });
         return categoriaResponsemMutableLiveData;
     }
-    //PRODUCTO POR CATEGORIA
+
+    //-- LISTAR PRODUCTOS POR CATEGORIA
     public LiveData<List<ProductoResponse>> getProductosByCategoriaId(int categoriaId) {
         MutableLiveData<List<ProductoResponse>> data = new MutableLiveData<>();
 
@@ -223,6 +226,7 @@ public class AuthViewModel extends AndroidViewModel {
         return data;
     }
 
+    //-- LISTAR TOP 6 PRODUCTOS MAS VENDIDOS
     public LiveData<List<TopProductosResponse>> listarTopProductos(){
         new BoraBoraClient().getInstance().topProductos().enqueue(new Callback<List<TopProductosResponse>>() {
             @Override
@@ -248,6 +252,62 @@ public class AuthViewModel extends AndroidViewModel {
             }
         });
         return productoResponseMutableLiveData;
+    }
+
+    //-- OBTENER LOS PRODUCTOS DE LA COMPRA DE UN USUARIO
+    public LiveData<List<ProductoCompraResponse>> getCompraProductos(int compraId) {
+        MutableLiveData<List<ProductoCompraResponse>> data = new MutableLiveData<>();
+
+        new BoraBoraClient().getInstance().getCompraProductos(compraId).enqueue(new Callback<List<ProductoCompraResponse>>() {
+            @Override
+            public void onResponse(Call<List<ProductoCompraResponse>> call, Response<List<ProductoCompraResponse>> response) {
+                if (response.isSuccessful()) {
+                    data.setValue(response.body());
+                } else {
+                    try {
+                        List<ProductoCompraResponse> errorResponse = new Gson().fromJson(response.errorBody().string(), new TypeToken<List<ProductoCompraResponse>>(){}.getType());
+                        if (!errorResponse.isEmpty() && "No se encontraron productos para el usuario".equals(errorResponse.get(0).getMessage())) {
+                            // maneja el caso en que no se encontraron productos
+                            data.setValue(null);
+                        } else {
+                            // maneja otros errores
+                            System.out.println("Error: " + errorResponse.get(0).getMessage());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProductoCompraResponse>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+        return data;
+    }
+
+    //-- OBTENER LA INFORMACION DE LA COMPRA DE UN USUARIO
+    public LiveData<CompraResponse> getInfoCompra(int compraId) {
+        MutableLiveData<CompraResponse> compraResponseMutableLiveData = new MutableLiveData<>();
+
+        new BoraBoraClient().getInstance().getInfoCompra(compraId).enqueue(new Callback<CompraResponse>() {
+            @Override
+            public void onResponse(Call<CompraResponse> call, Response<CompraResponse> response) {
+                if (response.isSuccessful()) {
+                    compraResponseMutableLiveData.setValue(response.body());
+                } else {
+                    // manejo de errores
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CompraResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+        return compraResponseMutableLiveData;
     }
 
 }

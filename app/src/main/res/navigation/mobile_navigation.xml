@@ -53,4 +53,9 @@
         android:name="pe.edu.idat.appborabora.view.activities.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/detalleHistorialCompras"
+        android:name="pe.edu.idat.appborabora.view.fragments.DetalleHistorialCompraFragment"
+        android:label="Historial de compra"
+        tools:layout="@layout/fragment_detalle_historial_compra" />
 </navigation>

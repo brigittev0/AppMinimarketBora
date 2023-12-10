@@ -1,8 +1,6 @@
 package pe.edu.idat.appborabora.retrofit.response;
 
-import java.util.Date;
-
-public class HistorialComprasResponse {
+public class CompraResponse {
     private String message;
     private String status;
     private int id;
@@ -13,7 +11,7 @@ public class HistorialComprasResponse {
     private int userId;
     private String fcompra;
 
-    public HistorialComprasResponse(String message, String status, int id, double total, double igv, double subtotal, String metodopago, int userId, String fcompra) {
+    public CompraResponse(String message, String status, int id, double total, double igv, double subtotal, String metodopago, int userId, String fcompra) {
         this.message = message;
         this.status = status;
         this.id = id;
