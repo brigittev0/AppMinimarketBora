@@ -36,18 +36,11 @@ public class HomeActivity extends AppCompatActivity {
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        NavigationView navigationView = binding.navView;
-        setSupportActionBar(binding.appBarHome.toolbar);
-        binding.appBarHome.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Bienvenido a Bora Bora", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
+        setSupportActionBar(binding.appBarHome.toolbar);
 
         DrawerLayout drawer = binding.drawerLayout;
+        NavigationView navigationView = binding.navView;
 
         //Codigo para visualizar el nombre y correo del usuario inicializado
         View headerView = navigationView.getHeaderView(0);
@@ -75,14 +68,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-        return true;
-    }
-
-
-    @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
@@ -90,3 +75,4 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 }
+
