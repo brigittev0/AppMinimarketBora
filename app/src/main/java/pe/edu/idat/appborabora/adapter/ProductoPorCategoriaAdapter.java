@@ -57,4 +57,6 @@ public class ProductoPorCategoriaAdapter extends RecyclerView.Adapter<ProductoPo
             binding = itemView;
         }
     }
+
+
 }

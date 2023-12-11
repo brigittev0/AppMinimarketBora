@@ -17,13 +17,14 @@ import pe.edu.idat.appborabora.retrofit.network.BoraBoraClient;
 import pe.edu.idat.appborabora.retrofit.network.BoraBoraService;
 import pe.edu.idat.appborabora.retrofit.request.LoginRequest;
 import pe.edu.idat.appborabora.retrofit.request.PerfilRequest;
+import pe.edu.idat.appborabora.retrofit.request.ProductoCarritoRequest;
 import pe.edu.idat.appborabora.retrofit.request.RegisterUserRequest;
 import pe.edu.idat.appborabora.retrofit.request.UpdatePasswordRequest;
 import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
-import pe.edu.idat.appborabora.retrofit.response.ProductoCarritoResponse;
 import pe.edu.idat.appborabora.retrofit.response.CategoriaResponse;
 import pe.edu.idat.appborabora.retrofit.response.HistorialComprasResponse;
 import pe.edu.idat.appborabora.retrofit.response.PerfilResponse;
+import pe.edu.idat.appborabora.retrofit.response.ProductoCarritoResponse;
 import pe.edu.idat.appborabora.retrofit.response.ProductoResponse;
 import pe.edu.idat.appborabora.retrofit.response.TopProductosResponse;
 import retrofit2.Call;
@@ -40,6 +41,9 @@ public class AuthViewModel extends AndroidViewModel {
     private MutableLiveData<List<TopProductosResponse>> productoResponseMutableLiveData = new MutableLiveData<>();
 
     private MutableLiveData<List<ProductoCarritoResponse>> carritopResponseMutableLiveData = new MutableLiveData<>();
+
+    public MutableLiveData<ApiResponse> createCarritoResponseMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<ApiResponse> agregarProductoResponseMutableLiveData = new MutableLiveData<>();
 
     private BoraBoraClient client = new BoraBoraClient();
     private BoraBoraService service = client.getInstance();
@@ -315,6 +319,53 @@ public class AuthViewModel extends AndroidViewModel {
 
         }); return carritopResponseMutableLiveData;
 
+    }
+
+
+    public void createCarrito(int userId) {
+        new BoraBoraClient().getInstance().createCarrito(userId).enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful()) {
+                    createCarritoResponseMutableLiveData.setValue(response.body());
+                } else {
+                    try {
+                        ApiResponse errorResponse = new Gson().fromJson(response.errorBody().string(), ApiResponse.class);
+                        createCarritoResponseMutableLiveData.setValue(errorResponse);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void agregarProducto(int carritoId, ProductoCarritoRequest productoCarritoRequest) {
+        new BoraBoraClient().getInstance().agregarProducto(carritoId, productoCarritoRequest).enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful()) {
+                    agregarProductoResponseMutableLiveData.setValue(response.body());
+                } else {
+                    try {
+                        ApiResponse errorResponse = new Gson().fromJson(response.errorBody().string(), ApiResponse.class);
+                        agregarProductoResponseMutableLiveData.setValue(errorResponse);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 }
 

@@ -5,13 +5,14 @@ import java.util.List;
 
 import pe.edu.idat.appborabora.retrofit.request.LoginRequest;
 import pe.edu.idat.appborabora.retrofit.request.PerfilRequest;
+import pe.edu.idat.appborabora.retrofit.request.ProductoCarritoRequest;
 import pe.edu.idat.appborabora.retrofit.request.RegisterUserRequest;
 import pe.edu.idat.appborabora.retrofit.request.UpdatePasswordRequest;
 import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
-import pe.edu.idat.appborabora.retrofit.response.ProductoCarritoResponse;
 import pe.edu.idat.appborabora.retrofit.response.CategoriaResponse;
 import pe.edu.idat.appborabora.retrofit.response.HistorialComprasResponse;
 import pe.edu.idat.appborabora.retrofit.response.PerfilResponse;
+import pe.edu.idat.appborabora.retrofit.response.ProductoCarritoResponse;
 import pe.edu.idat.appborabora.retrofit.response.ProductoResponse;
 import pe.edu.idat.appborabora.retrofit.response.TopProductosResponse;
 import retrofit2.Call;
@@ -52,4 +53,12 @@ public interface BoraBoraService {
 
     @GET("carrito/productos/{userId}")
     Call<List<ProductoCarritoResponse>> getCarritoProductos (@Path("userId") int userId);
+
+    @POST("carrito/crear/{userId}")
+    Call<ApiResponse> createCarrito(@Path("userId") int userId);
+
+    @POST("carrito/agregar/{carritoId}")
+    Call<ApiResponse> agregarProducto(@Path("carritoId") int carritoId, @Body ProductoCarritoRequest productoCarritoRequest);
+
+
 }
