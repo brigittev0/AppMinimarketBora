@@ -1,25 +1,20 @@
 package pe.edu.idat.appborabora.view.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import pe.edu.idat.appborabora.R;
-import pe.edu.idat.appborabora.adapter.CategoriaAdapter;
 import pe.edu.idat.appborabora.adapter.ProductoPorCategoriaAdapter;
-import pe.edu.idat.appborabora.databinding.FragmentCatalogoBinding;
 import pe.edu.idat.appborabora.databinding.FragmentListarProdCategoriaBinding;
-import pe.edu.idat.appborabora.retrofit.response.CategoriaResponse;
 import pe.edu.idat.appborabora.retrofit.response.ProductoResponse;
 import pe.edu.idat.appborabora.viewmodel.AuthViewModel;
 

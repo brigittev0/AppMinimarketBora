@@ -9,6 +9,7 @@ public class ProductoResponse {
     private String imagen;
     private double precio;
     private int stock;
+
     private int categoria_id;
 
     public ProductoResponse(int id, String descripcion, String fvencimiento, String marca, String nombre, String imagen, double precio, int stock, int categoria_id) {
