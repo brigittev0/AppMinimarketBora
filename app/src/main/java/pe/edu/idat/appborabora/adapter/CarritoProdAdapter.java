@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import pe.edu.idat.appborabora.databinding.ItemCarritocompraBinding;
@@ -35,6 +37,10 @@ public class CarritoProdAdapter extends RecyclerView.Adapter<CarritoProdAdapter.
         holder.binding.tvPrecioPDC.setText(String.valueOf(carritoProdResponse.getPrecio()));
         holder.binding.edtCantidad.setText(String.valueOf(carritoProdResponse.getCantidad()));
 
+        Glide.with(holder.itemView.getContext())
+                .load(carritoProdResponse.getImagen())
+                .into(holder.binding.imgPlatilloDC);
+
     }
 
     @Override
@@ -59,4 +65,18 @@ public class CarritoProdAdapter extends RecyclerView.Adapter<CarritoProdAdapter.
 
 
     }
-}
+        public double[] calcularTotales() {
+            double subtotal = 0;
+            double igv = 0;
+            double total = 0;
+
+            for (ProductoCarritoResponse producto : listcarritoProd) {
+                subtotal += producto.getCantidad() * producto.getPrecio();
+            }
+
+            igv = subtotal * 0.18;
+            total = subtotal + igv;
+
+            return new double[]{subtotal, igv, total};
+        }
+    }

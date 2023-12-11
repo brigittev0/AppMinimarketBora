@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import pe.edu.idat.appborabora.R;
 import pe.edu.idat.appborabora.adapter.CarritoProdAdapter;
@@ -52,6 +53,11 @@ public class CompraFragment extends Fragment {
 
                         carritoProdAdapter.setData(new ArrayList<>(carritoProdResponses)); // Actualiza los datos de tu adaptador
 
+                    double[] totales = carritoProdAdapter.calcularTotales();
+
+                    binding.tvsubtotal.setText(String.format(Locale.getDefault(), "%.2f", totales[0]));
+                    binding.tvigv.setText(String.format(Locale.getDefault(), "%.2f", totales[1]));
+                    binding.tvtotall.setText(String.format(Locale.getDefault(), "%.2f", totales[2]));
                 }
             });
 
@@ -64,4 +70,7 @@ public class CompraFragment extends Fragment {
 
         return binding.getRoot();
     }
+
+
+
 }
