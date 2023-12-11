@@ -7,8 +7,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -16,10 +17,10 @@ import pe.edu.idat.appborabora.retrofit.network.BoraBoraClient;
 import pe.edu.idat.appborabora.retrofit.network.BoraBoraService;
 import pe.edu.idat.appborabora.retrofit.request.LoginRequest;
 import pe.edu.idat.appborabora.retrofit.request.PerfilRequest;
+import pe.edu.idat.appborabora.retrofit.request.RegisterUserRequest;
 import pe.edu.idat.appborabora.retrofit.request.UpdatePasswordRequest;
 import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
-import pe.edu.idat.appborabora.retrofit.request.RegisterUserRequest;
-import pe.edu.idat.appborabora.retrofit.response.CarritoProdResponse;
+import pe.edu.idat.appborabora.retrofit.response.ProductoCarritoResponse;
 import pe.edu.idat.appborabora.retrofit.response.CategoriaResponse;
 import pe.edu.idat.appborabora.retrofit.response.HistorialComprasResponse;
 import pe.edu.idat.appborabora.retrofit.response.PerfilResponse;
@@ -28,8 +29,6 @@ import pe.edu.idat.appborabora.retrofit.response.TopProductosResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AuthViewModel extends AndroidViewModel {
     public MutableLiveData<ApiResponse> registerResponseMutableLiveData = new MutableLiveData<>();
@@ -40,7 +39,7 @@ public class AuthViewModel extends AndroidViewModel {
     public MutableLiveData<List<CategoriaResponse>> categoriaResponsemMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<List<TopProductosResponse>> productoResponseMutableLiveData = new MutableLiveData<>();
 
-    private MutableLiveData<List<CarritoProdResponse>> carritopResponseMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<ProductoCarritoResponse>> carritopResponseMutableLiveData = new MutableLiveData<>();
 
     private BoraBoraClient client = new BoraBoraClient();
     private BoraBoraService service = client.getInstance();
@@ -261,29 +260,64 @@ public class AuthViewModel extends AndroidViewModel {
         return productoResponseMutableLiveData;
     }
 
-    public LiveData<List<CarritoProdResponse>> ListCarritoProd(int userId) {
-        MutableLiveData<List<CarritoProdResponse>> data = new MutableLiveData<>();
+    public LiveData<List<ProductoCarritoResponse>> ListCarritoProd(int userId) {
+        MutableLiveData<List<ProductoCarritoResponse>> data = new MutableLiveData<>();
 
-        Call<List<CarritoProdResponse>> call = service.getCarritoProductos(userId);
-        call.enqueue(new Callback<List<CarritoProdResponse>>() {
+        Call<List<ProductoCarritoResponse>> call = service.getCarritoProductos(userId);
+        call.enqueue(new Callback<List<ProductoCarritoResponse>>() {
             @Override
-            public void onResponse(Call<List<CarritoProdResponse>> call, Response<List<CarritoProdResponse>> response) {
+            public void onResponse(Call<List<ProductoCarritoResponse>> call, Response<List<ProductoCarritoResponse>> response) {
                 if (response.isSuccessful() && response.code() == 200) {
                     data.setValue(response.body());
                 } else {
-                    // handle the error response here
+
                 }
             }
 
             @Override
-            public void onFailure(Call<List<CarritoProdResponse>> call, Throwable t) {
+            public void onFailure(Call<List<ProductoCarritoResponse>> call, Throwable t) {
                 t.printStackTrace();
             }
         });
 
         return data;
     }
+
+    public LiveData<List<ProductoCarritoResponse>> getCarritoProductos (int userId) {
+
+        new BoraBoraClient().getInstance().getCarritoProductos(userId).enqueue(new Callback<List<ProductoCarritoResponse>>() {
+            @Override
+            public void onResponse(Call<List<ProductoCarritoResponse>> call, Response<List<ProductoCarritoResponse>> response) {
+                if (response.isSuccessful()) {
+                    carritopResponseMutableLiveData.setValue(response.body());
+                } else {
+                    try {
+                        List<ProductoCarritoResponse> errorResponse = new Gson().fromJson(response.errorBody().string(), new TypeToken<List<ProductoCarritoResponse>>() {
+                        }.getType());
+                        if (!errorResponse.isEmpty() && "No se encontraron compras para el usuario".equals(errorResponse.get(0).getMessage())) {
+                            // maneja el caso en que no se encontraron compras
+                            carritopResponseMutableLiveData.setValue(null);
+                        } else {
+                            // maneja otros errores
+                            System.out.println("Error: " + errorResponse.get(0).getMessage());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProductoCarritoResponse>> call, Throwable t) {
+
+                t.printStackTrace();
+            }
+
+        }); return carritopResponseMutableLiveData;
+
+    }
 }
+
 
 
 

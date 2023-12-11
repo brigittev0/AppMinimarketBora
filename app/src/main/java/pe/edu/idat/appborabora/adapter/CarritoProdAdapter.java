@@ -1,23 +1,19 @@
 package pe.edu.idat.appborabora.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import pe.edu.idat.appborabora.R;
 import pe.edu.idat.appborabora.databinding.ItemCarritocompraBinding;
-import pe.edu.idat.appborabora.retrofit.response.CarritoProdResponse;
+import pe.edu.idat.appborabora.retrofit.response.ProductoCarritoResponse;
 
 public class CarritoProdAdapter extends RecyclerView.Adapter<CarritoProdAdapter.ViewHolder> {
 
-    private ArrayList<CarritoProdResponse> listcarritoProd = new ArrayList<>();
+    private ArrayList<ProductoCarritoResponse> listcarritoProd = new ArrayList<>();
 
 
     @NonNull
@@ -27,18 +23,18 @@ public class CarritoProdAdapter extends RecyclerView.Adapter<CarritoProdAdapter.
         return new ViewHolder(
                 ItemCarritocompraBinding.inflate
                         (LayoutInflater.from(parent.getContext()),
-                                parent,false
-        ));
+                                parent,false)
+        );
 
     }
 
     @Override
     public void onBindViewHolder(@NonNull CarritoProdAdapter.ViewHolder holder, int position) {
-        final CarritoProdResponse carritoProdResponse = listcarritoProd.get(position);
-        holder.
-        // Aquí puedes asignar los valores a las vistas en tu diseño
-        // Por ejemplo:
-        // holder.tvNombrePlatilloDC.setText(carritoProdResponse.getProducto_id());
+        final ProductoCarritoResponse carritoProdResponse = listcarritoProd.get(position);
+        holder.binding.tvNombrePlatilloDC.setText(carritoProdResponse.getNombre());
+        holder.binding.tvPrecioPDC.setText(String.valueOf(carritoProdResponse.getPrecio()));
+        holder.binding.edtCantidad.setText(String.valueOf(carritoProdResponse.getCantidad()));
+
     }
 
     @Override
@@ -46,16 +42,19 @@ public class CarritoProdAdapter extends RecyclerView.Adapter<CarritoProdAdapter.
         return listcarritoProd.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        // Aquí puedes definir las vistas en tu diseño
-        // Por ejemplo:
-        // TextView tvNombrePlatilloDC;
+    public void setData(ArrayList<ProductoCarritoResponse> data){
+        listcarritoProd.clear();
+        listcarritoProd.addAll(data);
+        notifyDataSetChanged();
+    }
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            // Aquí puedes inicializar las vistas en tu diseño
-            // Por ejemplo:
-            // tvNombrePlatilloDC = itemView.findViewById(R.id.tvNombrePlatilloDC);
+    public class ViewHolder extends RecyclerView.ViewHolder {
+         ItemCarritocompraBinding binding;
+
+        public ViewHolder(ItemCarritocompraBinding itemView) {
+            super(itemView.getRoot());
+            binding=itemView;
+
         }
 
 

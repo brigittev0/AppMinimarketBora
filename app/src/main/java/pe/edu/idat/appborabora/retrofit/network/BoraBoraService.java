@@ -8,7 +8,7 @@ import pe.edu.idat.appborabora.retrofit.request.PerfilRequest;
 import pe.edu.idat.appborabora.retrofit.request.RegisterUserRequest;
 import pe.edu.idat.appborabora.retrofit.request.UpdatePasswordRequest;
 import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
-import pe.edu.idat.appborabora.retrofit.response.CarritoProdResponse;
+import pe.edu.idat.appborabora.retrofit.response.ProductoCarritoResponse;
 import pe.edu.idat.appborabora.retrofit.response.CategoriaResponse;
 import pe.edu.idat.appborabora.retrofit.response.HistorialComprasResponse;
 import pe.edu.idat.appborabora.retrofit.response.PerfilResponse;
@@ -50,6 +50,6 @@ public interface BoraBoraService {
     @GET("topProductos")
     Call<List<TopProductosResponse>> topProductos();
 
-    @GET("/carrito/productos/{userId}")
-    Call<List<CarritoProdResponse>> getCarritoProductos (@Path("userId") int userId);
+    @GET("carrito/productos/{userId}")
+    Call<List<ProductoCarritoResponse>> getCarritoProductos (@Path("userId") int userId);
 }
