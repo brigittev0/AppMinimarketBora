@@ -41,6 +41,8 @@ public class AuthViewModel extends AndroidViewModel {
     public MutableLiveData<List<CategoriaResponse>> categoriaResponsemMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<List<TopProductosResponse>> productoResponseMutableLiveData = new MutableLiveData<>();
 
+    private MutableLiveData<ProductoResponse> productoResponseMutableLiveData2 = new MutableLiveData<>();
+
     private BoraBoraClient client = new BoraBoraClient();
     private BoraBoraService service = client.getInstance();
     public MutableLiveData<ApiResponse> updatePerfilResponseLiveData = new MutableLiveData<>();
@@ -297,8 +299,6 @@ public class AuthViewModel extends AndroidViewModel {
             public void onResponse(Call<CompraResponse> call, Response<CompraResponse> response) {
                 if (response.isSuccessful()) {
                     compraResponseMutableLiveData.setValue(response.body());
-                } else {
-                    // manejo de errores
                 }
             }
 
@@ -308,6 +308,23 @@ public class AuthViewModel extends AndroidViewModel {
             }
         });
         return compraResponseMutableLiveData;
+    }
+
+    public LiveData<ProductoResponse> getProductoById(int productoId) {
+        new BoraBoraClient().getInstance().getProductoById(productoId).enqueue(new Callback<ProductoResponse>() {
+            @Override
+            public void onResponse(Call<ProductoResponse> call, Response<ProductoResponse> response) {
+                if (response.isSuccessful()) {
+                    productoResponseMutableLiveData2.setValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductoResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+        return productoResponseMutableLiveData2;
     }
 
 }

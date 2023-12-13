@@ -59,4 +59,7 @@ public interface BoraBoraService {
 
     @GET("compras/info/{compraId}")
     Call<CompraResponse> getInfoCompra(@Path("compraId") int compraId);
+    //BUSCAR PRODUCTO ID
+    @GET("productos/buscarproducto/{id}")
+    Call<ProductoResponse> getProductoById(@Path("id") int productoId);
 }

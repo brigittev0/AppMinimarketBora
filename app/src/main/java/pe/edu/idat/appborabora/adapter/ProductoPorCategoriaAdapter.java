@@ -1,21 +1,37 @@
 package pe.edu.idat.appborabora.adapter;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import pe.edu.idat.appborabora.R;
 import pe.edu.idat.appborabora.databinding.ItemProductoPorCategoriaBinding;
+import pe.edu.idat.appborabora.retrofit.response.CategoriaResponse;
 import pe.edu.idat.appborabora.retrofit.response.ProductoResponse;
 
 public class ProductoPorCategoriaAdapter extends RecyclerView.Adapter<ProductoPorCategoriaAdapter.ViewHolder> {
 
     private ArrayList<ProductoResponse> lista = new ArrayList<>();
+    public interface OnItemClickListener {
+        void onItemClick(ProductoResponse producto);
+    }
+
+    private ProductoPorCategoriaAdapter.OnItemClickListener listener;
+
+    public void setOnItemClickListener(ProductoPorCategoriaAdapter.OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
 
     @NonNull
     @Override
@@ -36,8 +52,18 @@ public class ProductoPorCategoriaAdapter extends RecyclerView.Adapter<ProductoPo
         Glide.with(holder.itemView.getContext())
                 .load(producto.getImagen())
                 .into(holder.binding.imgProducto);
+        // click listener
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int productoId = producto.getId();
+                Bundle bundle = new Bundle();
+                bundle.putInt("productoId", productoId);
+                NavController navController = Navigation.findNavController(v);
+                navController.navigate(R.id.detalleProductoFragment, bundle);
+            }
+        });
     }
-
 
     @Override
     public int getItemCount() {
@@ -45,6 +71,7 @@ public class ProductoPorCategoriaAdapter extends RecyclerView.Adapter<ProductoPo
     }
 
     public void setData(ArrayList<ProductoResponse> data){
+        lista.clear();
         lista.addAll(data);
         notifyDataSetChanged();
     }

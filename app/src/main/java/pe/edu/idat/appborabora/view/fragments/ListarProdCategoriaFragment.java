@@ -14,12 +14,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import pe.edu.idat.appborabora.R;
-import pe.edu.idat.appborabora.adapter.CategoriaAdapter;
 import pe.edu.idat.appborabora.adapter.ProductoPorCategoriaAdapter;
-import pe.edu.idat.appborabora.databinding.FragmentCatalogoBinding;
 import pe.edu.idat.appborabora.databinding.FragmentListarProdCategoriaBinding;
-import pe.edu.idat.appborabora.retrofit.response.CategoriaResponse;
 import pe.edu.idat.appborabora.retrofit.response.ProductoResponse;
 import pe.edu.idat.appborabora.viewmodel.AuthViewModel;
 
@@ -52,6 +48,7 @@ public class ListarProdCategoriaFragment extends Fragment {
                 productoAdapter.setData(new ArrayList<>(productoResponses)); // Actualiza los datos de tu adaptador
             }
         });
+
 
         return binding.getRoot();
     }
