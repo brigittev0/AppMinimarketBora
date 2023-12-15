@@ -115,8 +115,6 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
             btnDecrease = itemView.findViewById(R.id.btnDecrease);
             btnEliminar = itemView.findViewById(R.id.btnEliminarPCarrito);
         }
-
-
     }
 }
 

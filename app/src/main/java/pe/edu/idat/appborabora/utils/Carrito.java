@@ -24,7 +24,7 @@ public class Carrito {
 
         for (ProductoCarrito prod : productosEnCarrito) {
             if (prod.getId() == producto.getId()) {
-                productosEnCarrito.set(index, producto);
+                prod.setCantidad(prod.getCantidad() + producto.getCantidad());
                 encontrado = true;
                 return "El producto ha sido agregado al carrito, se actualizará la cantidad";
             }
