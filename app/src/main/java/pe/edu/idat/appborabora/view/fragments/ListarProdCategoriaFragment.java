@@ -53,6 +53,13 @@ public class ListarProdCategoriaFragment extends Fragment {
             }
         });
 
+
+
+
+
         return binding.getRoot();
+
+
+
     }
 }
