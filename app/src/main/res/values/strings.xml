@@ -22,8 +22,8 @@
     <string name="condicion1">Autorizo al envió de promociones, así como informes de productos de BoraBora.</string>
     <string name="condicion2">Acepto el tratamiento de mis datos personales bajo condiciones de BoraBora.</string>
     <string name="btncrear">CREAR</string>
-    <string name="n_contra">Nueva contraseña</string>
-    <string name="Contras">Contraseña actual</string>
+    <string name="n_contra">Confirme Nueva Contraseña</string>
+    <string name="Contras">Ingrese Nueva Contraseña</string>
     <string name="btnactualizarcontra">Actualizar</string>
     <string name="titulocatalogo">Catalogo</string>
     <string name="grupo1">Frutas y verduras</string>
