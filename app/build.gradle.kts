@@ -68,5 +68,7 @@ dependencies {
     testImplementation("androidx.room:room-testing:2.6.1")
     //Sweet Alert
     implementation ("com.github.f0ris.sweetalert:library:1.6.2")
+
+    implementation ("com.github.smarteist:autoimageslider:1.4.0")
 }
 

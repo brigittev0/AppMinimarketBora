@@ -80,7 +80,7 @@ public class ProductosDashboardAdapter extends RecyclerView.Adapter<ProductosDas
                     .load(productoResponse.getImagen())
                     .into(imgProducto);
             nombreProducto.setText(productoResponse.getNombre());
-            precioProducto.setText(String.valueOf(productoResponse.getPrecio()));
+            precioProducto.setText("S/" + String.valueOf(productoResponse.getPrecio()));
 
             btnOrdenar.setOnClickListener(v -> {
                 ProductoCarrito carritoPedido = new ProductoCarrito();
