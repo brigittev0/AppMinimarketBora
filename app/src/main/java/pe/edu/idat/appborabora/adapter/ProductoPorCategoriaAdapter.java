@@ -59,7 +59,7 @@ public class ProductoPorCategoriaAdapter extends RecyclerView.Adapter<ProductoPo
     public void onBindViewHolder(@NonNull ProductoPorCategoriaAdapter.ViewHolder holder, int position) {
         final ProductoResponse producto = lista.get(position);
         holder.binding.nombreProducto.setText(producto.getNombre());
-        holder.binding.txtPrecioProducto.setText(String.valueOf(producto.getPrecio()));
+        holder.binding.txtPrecioProducto.setText("S/ " + String.valueOf(producto.getPrecio()));
 
         Glide.with(holder.itemView.getContext())
                 .load(producto.getImagen())

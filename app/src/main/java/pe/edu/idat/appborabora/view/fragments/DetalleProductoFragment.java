@@ -47,7 +47,7 @@ public class DetalleProductoFragment extends Fragment {
                 binding.tvNombre.setText(producto.getNombre());
                 binding.tvDescripcion.setText(producto.getDescripcion());
                 binding.tvMarca.setText(producto.getMarca());
-                binding.tvPrecio.setText(String.valueOf(producto.getPrecio()));
+                binding.tvPrecio.setText("S/ "+ String.valueOf(producto.getPrecio()));
                 binding.tvStock.setText(String.valueOf(producto.getStock()));
             }
         });

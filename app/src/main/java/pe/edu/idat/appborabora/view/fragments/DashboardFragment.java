@@ -96,6 +96,10 @@ public class DashboardFragment extends Fragment  {
         lista.add(new SliderItem(R.drawable.img_4, ""));
         sliderAdapter.updateItem(lista);
 
+        svCarrusel.stopAutoCycle();
+        svCarrusel.startAutoCycle();
+
+
         authViewModel.listarTopProductos().observe(getViewLifecycleOwner(), response ->{
             productosDashboardAdapter.updateItems(response);
         });

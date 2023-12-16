@@ -48,7 +48,7 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, int position) {
         ProductoCarrito producto = carrito.get(position);
         holder.tvNombre.setText(producto.getNombre());
-        holder.tvPrecio.setText(String.valueOf(producto.getPrecio()));
+        holder.tvPrecio.setText("S/ " + String.valueOf(producto.getPrecio()));
         int cant = producto.getCantidad();
         holder.edtCantidad.setText(Integer.toString(cant));
 
