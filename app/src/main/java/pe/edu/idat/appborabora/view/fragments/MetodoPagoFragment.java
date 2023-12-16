@@ -44,7 +44,7 @@ public class MetodoPagoFragment extends Fragment {
             public void onClick(View v) {
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("metodo_pago", "Recojo en tienda");
+                editor.putString("metodo_pago", "Efectivo");
                 editor.apply();
                 Snackbar.make(v, "Elección guardada", Snackbar.LENGTH_SHORT).show();
                 Navigation.findNavController(v).navigate(R.id.compraFragment);
