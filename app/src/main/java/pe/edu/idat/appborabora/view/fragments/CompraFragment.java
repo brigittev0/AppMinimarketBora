@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -73,6 +74,27 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
             }
         });
 
+
+        binding.btnmasproductos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.dashboardFragment);
+            }
+        });
+
+        /*
+        binding.btnmasproductos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Navigation.findNavController(v).navigate(R.id.catalogoFragment, null, new NavOptions.Builder()
+
+                        .setLaunchSingleTop(true)
+                        .setPopUpTo(R.id.compraFragment, false)
+                        .build());
+            }
+        }); */
+
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         int userId = sharedPreferences.getInt("user_id", 0);
         binding.btnfinalizarcompra.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +142,15 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
         // Imprime el userId en Logcat
         Log.d("MyApp", "UserId: " + userId);
 
+        float subtotal = sharedPreferences.getFloat("subtotal", 0);
+        float igv = sharedPreferences.getFloat("igv", 0);
+        float total = sharedPreferences.getFloat("total", 0);
+
+        // Actualiza los TextViews con los valores recuperados
+        binding.txtsubtotal.setText(String.format(Locale.getDefault(), "%.2f", subtotal));
+        binding.txtigv.setText(String.format(Locale.getDefault(), "%.2f", igv));
+        binding.txttotal.setText(String.format(Locale.getDefault(), "%.2f", total));
+
 
         // Actualizar los datos en el adaptador aquí
         listaProductosCarrito.clear();
@@ -143,6 +174,13 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
         double subtotal = Carrito.calcularSubtotal(userId);
         double igv = Carrito.calcularIGV(userId);
         double total = Carrito.calcularTotal(userId);
+
+        // Almacena los valores en SharedPreferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat("subtotal", (float) subtotal);
+        editor.putFloat("igv", (float) igv);
+        editor.putFloat("total", (float) total);
+        editor.apply();
 
         binding.txtsubtotal.setText(String.format(Locale.getDefault(), "%.2f", subtotal));
         binding.txtigv.setText(String.format(Locale.getDefault(), "%.2f", igv));

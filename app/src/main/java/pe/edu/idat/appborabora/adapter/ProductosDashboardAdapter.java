@@ -78,6 +78,7 @@ public class ProductosDashboardAdapter extends RecyclerView.Adapter<ProductosDas
                 carritoPedido.setNombre(productoResponse.getNombre());
                 carritoPedido.setCantidad(1);
                 carritoPedido.setPrecio(productoResponse.getPrecio());
+                carritoPedido.setImagen(productoResponse.getImagen());
 
                 // Obtener el userId de las preferencias compartidas
                 SharedPreferences sharedPreferences = itemView.getContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);

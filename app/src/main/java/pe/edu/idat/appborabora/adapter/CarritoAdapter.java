@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -49,6 +51,10 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
         holder.tvPrecio.setText(String.valueOf(producto.getPrecio()));
         int cant = producto.getCantidad();
         holder.edtCantidad.setText(Integer.toString(cant));
+
+        Glide.with(holder.itemView.getContext())
+                .load(producto.getImagen())
+                .into(holder.imgProducto);
 
         //-------------Actualizar Cantidad del Carrito-------------------------
         holder.btnAdd.setOnClickListener(v -> {

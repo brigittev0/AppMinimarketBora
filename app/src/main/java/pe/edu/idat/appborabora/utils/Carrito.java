@@ -14,30 +14,19 @@ public class Carrito {
         if (!carritos.containsKey(userId)) {
             carritos.put(userId, new ArrayList<>());
         }
-
         ArrayList<ProductoCarrito> productosEnCarrito = carritos.get(userId);
-
-
-
-        int index = 0;
-        boolean encontrado = false;
 
         for (ProductoCarrito prod : productosEnCarrito) {
             if (prod.getId() == producto.getId()) {
-                productosEnCarrito.set(index, producto);
-                encontrado = true;
+                prod.setCantidad(prod.getCantidad() + producto.getCantidad());
                 return "El producto ha sido agregado al carrito, se actualizará la cantidad";
             }
-            index++;
         }
 
-        if (!encontrado) {
-            productosEnCarrito.add(producto);
-            return "El producto ha sido agregado al carrito con éxito";
-        }
-
-        return ". . . . ";
+        productosEnCarrito.add(producto);
+        return "El producto ha sido agregado al carrito con éxito";
     }
+
 
     public static void eliminarProducto(int userId, int idProducto) {
         ArrayList<ProductoCarrito> productosEnCarrito = carritos.get(userId);
@@ -79,4 +68,5 @@ public class Carrito {
         double igv = calcularIGV(userId);
         return subtotal + igv;
     }
+
 }
