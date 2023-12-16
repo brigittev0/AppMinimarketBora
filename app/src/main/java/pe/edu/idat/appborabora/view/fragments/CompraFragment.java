@@ -62,13 +62,14 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
         recyclerView.setAdapter(carritoAdapter);
 
 
+        /*
         SharedPreferences sharedPreference = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         String subtotal = sharedPreference.getString("subtotal", "0");
         String igv = sharedPreference.getString("igv", "0");
         String total = sharedPreference.getString("total", "0");
         binding.txtsubtotal.setText(subtotal);
         binding.txtigv.setText(igv);
-        binding.txttotal.setText(total);
+        binding.txttotal.setText(total);  */
 
         binding.btnmetodo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,11 +205,12 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
         binding.txtigv.setText(String.format(Locale.getDefault(), "%.2f", igv));
         binding.txttotal.setText(String.format(Locale.getDefault(), "%.2f", total));
 
+        /*
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("subtotal", String.format(Locale.getDefault(), "%.2f", subtotal));
         editor.putString("igv", String.format(Locale.getDefault(), "%.2f", igv));
         editor.putString("total", String.format(Locale.getDefault(), "%.2f", total));
-        editor.apply();
+        editor.apply();*/
     }
 }
