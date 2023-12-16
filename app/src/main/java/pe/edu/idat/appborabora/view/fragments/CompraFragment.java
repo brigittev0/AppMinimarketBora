@@ -61,7 +61,6 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
         carritoAdapter = new CarritoAdapter(listaProductosCarrito,this);
         recyclerView.setAdapter(carritoAdapter);
 
-
         /*
         SharedPreferences sharedPreference = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         String subtotal = sharedPreference.getString("subtotal", "0");
