@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
@@ -18,14 +19,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toolbar;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,10 +33,10 @@ import pe.edu.idat.appborabora.R;
 import pe.edu.idat.appborabora.adapter.CarritoAdapter;
 import pe.edu.idat.appborabora.databinding.FragmentCompraBinding;
 import pe.edu.idat.appborabora.retrofit.request.CompraRequest;
+import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
 import pe.edu.idat.appborabora.retrofit.response.ProductoCarrito;
 import pe.edu.idat.appborabora.utils.Carrito;
-import pe.edu.idat.appborabora.utils.DateSerializer;
-import pe.edu.idat.appborabora.utils.TimeSerializer;
+import pe.edu.idat.appborabora.utils.ProductoCompra;
 import pe.edu.idat.appborabora.viewmodel.AuthViewModel;
 
 public class CompraFragment extends Fragment implements CarritoAdapter.OnCarritoChangeListener {
@@ -49,11 +47,7 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
     private List<ProductoCarrito> listaProductosCarrito = new ArrayList<>();
 
     private AuthViewModel authViewModel;
-
-    final Gson g = new GsonBuilder()
-            .registerTypeAdapter(Date.class, new DateSerializer())
-            .registerTypeAdapter(Time.class, new TimeSerializer())
-            .create();
+    private int userId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,7 +90,12 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
         }); */
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
-        int userId = sharedPreferences.getInt("user_id", 0);
+        userId = sharedPreferences.getInt("user_id", 0);
+
+        // Imprime el userId en Logcat
+        Log.d("MyApp", "UserId: " + userId);
+        //-------------
+
         binding.btnfinalizarcompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,27 +104,46 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
 
                 // Obtener la lista de productos del carrito
                 List<ProductoCarrito> productosEnCarrito = Carrito.getProductosEnCarrito(userId);
-                List<ProductoCarrito> listaProductos = new ArrayList<>();
+                List<ProductoCompra> listaProductos = new ArrayList<>();
                 for (ProductoCarrito producto : productosEnCarrito) {
-                    listaProductos.add(producto);
+                    listaProductos.add(new ProductoCompra(producto.getId(), producto.getCantidad()));
                 }
-
-
-                // Establecer la lista de productos en CompraRequest
                 compraRequest.setProductos(listaProductos);
 
 
 
                 // Obtener la fecha actual del sistema y establecerla en CompraRequest
+                // Obtener la fecha actual del sistema y establecerla en CompraRequest
                 Date fechaActual = new Date();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    compraRequest.setFcompra(fechaActual.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                    LocalDate localDate = fechaActual.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    String formattedString = localDate.format(formatter);
+                    compraRequest.setFcompra(formattedString);
                 }
 
                 // Establecer el método de pago en CompraRequest como "en proceso"
                 compraRequest.setMetodopago("en proceso");
 
                 authViewModel.postInsertCompra(compraRequest);
+                authViewModel.insertCompraResponseMutableLiveData.observe(getViewLifecycleOwner(), new Observer<ApiResponse>() {
+                    @Override
+                    public void onChanged(ApiResponse apiResponse) {
+                        if (apiResponse != null) {
+                            // Aquí puedes manejar la respuesta de la inserción de la compra
+                            // Por ejemplo, puedes mostrar un mensaje al usuario
+                            Toast.makeText(getContext(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            // Imprimir el mensaje en el logcat
+                            Log.d("MyApp", "Respuesta de la API: " + apiResponse.getMessage());
+                        } else {
+                            // Aquí puedes manejar el caso en que la respuesta es null
+                            // Por ejemplo, puedes mostrar un mensaje de error al usuario
+                            Toast.makeText(getContext(), "Error al insertar la compra", Toast.LENGTH_SHORT).show();
+                            // Imprimir el mensaje de error en el logcat
+                            Log.e("MyApp", "Error al insertar la compra");
+                        }
+                    }
+                });
             }
         });
 
@@ -151,7 +169,6 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
         binding.txtigv.setText(String.format(Locale.getDefault(), "%.2f", igv));
         binding.txttotal.setText(String.format(Locale.getDefault(), "%.2f", total));
 
-
         // Actualizar los datos en el adaptador aquí
         listaProductosCarrito.clear();
         List<ProductoCarrito> productosEnCarrito = Carrito.getProductosEnCarrito(userId);
@@ -169,23 +186,12 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
     }
 
     public void actualizarTotales() {
-        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
-        int userId = sharedPreferences.getInt("user_id", 0);
         double subtotal = Carrito.calcularSubtotal(userId);
         double igv = Carrito.calcularIGV(userId);
         double total = Carrito.calcularTotal(userId);
-
-        // Almacena los valores en SharedPreferences
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putFloat("subtotal", (float) subtotal);
-        editor.putFloat("igv", (float) igv);
-        editor.putFloat("total", (float) total);
-        editor.apply();
 
         binding.txtsubtotal.setText(String.format(Locale.getDefault(), "%.2f", subtotal));
         binding.txtigv.setText(String.format(Locale.getDefault(), "%.2f", igv));
         binding.txttotal.setText(String.format(Locale.getDefault(), "%.2f", total));
     }
-
-
 }

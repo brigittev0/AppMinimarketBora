@@ -1,10 +1,12 @@
 package pe.edu.idat.appborabora.retrofit.response;
 
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 @Entity(tableName = "carrito")
 public class ProductoCarrito {
 
+    @PrimaryKey
     private int id;
     private String descripcion;
     private String fvencimiento;

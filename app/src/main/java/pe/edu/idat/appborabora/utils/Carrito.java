@@ -19,6 +19,7 @@ public class Carrito {
         for (ProductoCarrito prod : productosEnCarrito) {
             if (prod.getId() == producto.getId()) {
                 prod.setCantidad(prod.getCantidad() + producto.getCantidad());
+
                 return "El producto ha sido agregado al carrito, se actualizará la cantidad";
             }
         }

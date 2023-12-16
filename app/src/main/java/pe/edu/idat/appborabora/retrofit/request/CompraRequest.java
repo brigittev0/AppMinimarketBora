@@ -5,6 +5,7 @@ import java.util.List;
 
 import pe.edu.idat.appborabora.adapter.CarritoAdapter;
 import pe.edu.idat.appborabora.retrofit.response.ProductoCarrito;
+import pe.edu.idat.appborabora.utils.ProductoCompra;
 
 public class CompraRequest {
 
@@ -17,11 +18,11 @@ public class CompraRequest {
 
     private String metodopago;
 
-    private LocalDate fcompra;
+    private String fcompra;
 
     private Integer userId;
 
-    private List<ProductoCarrito> productos;
+    private List<ProductoCompra> productos;
 
 
     public CompraRequest() {
@@ -60,11 +61,11 @@ public class CompraRequest {
         this.metodopago = metodopago;
     }
 
-    public LocalDate getFcompra() {
+    public String getFcompra() {
         return fcompra;
     }
 
-    public void setFcompra(LocalDate fcompra) {
+    public void setFcompra(String fcompra) {
         this.fcompra = fcompra;
     }
 
@@ -76,11 +77,11 @@ public class CompraRequest {
         this.userId = userId;
     }
 
-    public List<ProductoCarrito> getProductos() {
+    public List<ProductoCompra> getProductos() {
         return productos;
     }
 
-    public void setProductos(List<ProductoCarrito> productos) {
+    public void setProductos(List<ProductoCompra> productos) {
         this.productos = productos;
     }
 }
