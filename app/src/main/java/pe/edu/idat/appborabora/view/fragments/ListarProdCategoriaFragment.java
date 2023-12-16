@@ -36,6 +36,8 @@ public class ListarProdCategoriaFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
+
+
         // Obtén el ID de la categoría desde los argumentos del fragmento
         if (getArguments() != null) {
             categoriaId = getArguments().getInt("categoriaId");

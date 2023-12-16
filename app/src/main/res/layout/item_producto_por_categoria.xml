@@ -70,6 +70,19 @@
                 android:textSize="11dp"
                 android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/btnVerDetalle"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#FF8500"
+                android:fontFamily="sans-serif-medium"
+                android:text="Ver Detalle"
+                android:textColor="#fff"
+                android:textSize="11dp"
+                android:textStyle="bold" />
+
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

@@ -1,4 +1,4 @@
-package pe.edu.idat.appborabora;
+package pe.edu.idat.appborabora.view.fragments;
 
 import android.os.Bundle;
 

@@ -94,6 +94,16 @@ public class ProductoPorCategoriaAdapter extends RecyclerView.Adapter<ProductoPo
             notifyDataSetChanged();
         });
 
+        holder.binding.btnVerDetalle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int productoId = producto.getId();
+                Bundle bundle = new Bundle();
+                bundle.putInt("productoId", productoId);
+                NavController navController = Navigation.findNavController(v);
+                navController.navigate(R.id.detalleProductoFragment, bundle);
+            }
+        });
     }
 
     @Override
