@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
@@ -14,6 +15,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -83,15 +85,15 @@ public class ProductoPorCategoriaAdapter extends RecyclerView.Adapter<ProductoPo
             carritoPedido.setPrecio(producto.getPrecio());
             carritoPedido.setImagen(producto.getImagen());
 
+
             // Obtener el userId de las preferencias compartidas
             SharedPreferences sharedPreferences = holder.itemView.getContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
             int userId = sharedPreferences.getInt("user_id", 0);
 
             // Agregar el producto al carrito
             Carrito.agregarProducto(userId, carritoPedido);
+            Toast.makeText(holder.itemView.getContext(), "Producto Añadido", Toast.LENGTH_SHORT).show();
 
-            // Notificar al adaptador que los datos han cambiado
-            notifyDataSetChanged();
         });
 
         holder.binding.btnVerDetalle.setOnClickListener(new View.OnClickListener() {

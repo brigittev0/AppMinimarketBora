@@ -1,15 +1,21 @@
 package pe.edu.idat.appborabora.adapter;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,6 +26,7 @@ import java.util.List;
 
 import pe.edu.idat.appborabora.R;
 import pe.edu.idat.appborabora.retrofit.response.ProductoCarrito;
+import pe.edu.idat.appborabora.retrofit.response.ProductoResponse;
 import pe.edu.idat.appborabora.retrofit.response.TopProductosResponse;
 import pe.edu.idat.appborabora.utils.Carrito;
 
@@ -28,6 +35,7 @@ public class ProductosDashboardAdapter extends RecyclerView.Adapter<ProductosDas
     private List<TopProductosResponse> productoResponses;
 
     private ArrayList<ProductoCarrito> p = new ArrayList<>();
+
 
     public ProductosDashboardAdapter(List<TopProductosResponse> productoResponses) {
         this.productoResponses = productoResponses;
@@ -43,6 +51,7 @@ public class ProductosDashboardAdapter extends RecyclerView.Adapter<ProductosDas
     @Override
     public void onBindViewHolder(@NonNull ProductosDashboardAdapter.ViewHolder holder, int position) {
         holder.setItem(this.productoResponses.get(position));
+
     }
 
     @Override
@@ -87,13 +96,19 @@ public class ProductosDashboardAdapter extends RecyclerView.Adapter<ProductosDas
 
                 // Agregar el producto al carrito
                 Carrito.agregarProducto(userId, carritoPedido);
-                Snackbar.make(v, "Producto añadido", Snackbar.LENGTH_SHORT).show();
-
-
-
+                Toast.makeText(itemView.getContext(), "Producto Añadido", Toast.LENGTH_SHORT).show();
             });
 
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int productoId = productoResponse.getId();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("productoId", productoId);
+                    NavController navController = Navigation.findNavController(v);
+                    navController.navigate(R.id.detalleProductoFragment, bundle);
+                }
+            });
         }
     }
 }

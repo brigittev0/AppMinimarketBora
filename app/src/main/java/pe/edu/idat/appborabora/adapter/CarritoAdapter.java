@@ -61,7 +61,7 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
             if (producto.getCantidad() != 10) {
                 producto.addOne();
                 CarritoAdapter.this.notifyDataSetChanged();
-                listener.onCarritoChange();
+                //listener.onCarritoChange();
                 listener.actualizarTotales();
             }
         });
@@ -69,7 +69,7 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
             if (producto.getCantidad() != 1) {
                 producto.removeOne();
                 CarritoAdapter.this.notifyDataSetChanged();
-                listener.onCarritoChange();
+                //listener.onCarritoChange();
                 listener.actualizarTotales();
             }
         });
@@ -85,7 +85,7 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
                 carrito.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, carrito.size());
-                listener.onCarritoChange();
+                //listener.onCarritoChange();
                 listener.actualizarTotales();
 
             }

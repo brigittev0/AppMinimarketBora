@@ -85,19 +85,6 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
             }
         });
 
-        /*
-        binding.btnmasproductos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Navigation.findNavController(v).navigate(R.id.catalogoFragment, null, new NavOptions.Builder()
-
-                        .setLaunchSingleTop(true)
-                        .setPopUpTo(R.id.compraFragment, false)
-                        .build());
-            }
-        }); */
-
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         userId = sharedPreferences.getInt("user_id", 0);
 
@@ -113,6 +100,10 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
 
                 // Obtener la lista de productos del carrito
                 List<ProductoCarrito> productosEnCarrito = Carrito.getProductosEnCarrito(userId);
+                if (productosEnCarrito == null || productosEnCarrito.isEmpty()) {
+                    Toast.makeText(getContext(), "No puedes finalizar la compra con el carrito vacío", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 List<ProductoCompra> listaProductos = new ArrayList<>();
                 for (ProductoCarrito producto : productosEnCarrito) {
                     listaProductos.add(new ProductoCompra(producto.getId(), producto.getCantidad()));
@@ -120,8 +111,6 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
                 compraRequest.setProductos(listaProductos);
 
 
-
-                // Obtener la fecha actual del sistema y establecerla en CompraRequest
                 // Obtener la fecha actual del sistema y establecerla en CompraRequest
                 Date fechaActual = new Date();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -195,11 +184,12 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
         if (productosEnCarrito != null) {
             listaProductosCarrito.addAll(productosEnCarrito);
         } else {
+            Toast.makeText(getContext(), "Carrito Vacio", Toast.LENGTH_SHORT).show();
             Log.d("MyApp", "No hay productos en el carrito para el userId: " + userId);
             // Maneja el caso en que no hay productos en el carrito para este userId
         }
         carritoAdapter.setListaProductosCarrito(listaProductosCarrito);
-        carritoAdapter.notifyDataSetChanged();
+
     }
     public void onCarritoChange() {
         actualizarTotales();
