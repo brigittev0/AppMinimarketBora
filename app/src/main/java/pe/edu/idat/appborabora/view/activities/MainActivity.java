@@ -15,7 +15,7 @@ import java.util.NavigableMap;
 import pe.edu.idat.appborabora.R;
 import pe.edu.idat.appborabora.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private ActivityMainBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.btningresar.setOnClickListener(this);
         binding.tvregistro.setOnClickListener(this);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -39,16 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            // ... otros casos ...
-            case R.id.mainActivity:
-                cerrarSesion();
-                break;
-        }
-        return true;
-    }
 
     private void cerrarSesion() {
         Intent intent = new Intent(this, MainActivity.class);
