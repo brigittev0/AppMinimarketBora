@@ -62,6 +62,7 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
                 producto.addOne();
                 CarritoAdapter.this.notifyDataSetChanged();
                 listener.onCarritoChange();
+                listener.actualizarTotales();
             }
         });
         holder.btnDecrease.setOnClickListener(v -> {
@@ -69,6 +70,7 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
                 producto.removeOne();
                 CarritoAdapter.this.notifyDataSetChanged();
                 listener.onCarritoChange();
+                listener.actualizarTotales();
             }
         });
         holder.btnEliminar.setOnClickListener(new View.OnClickListener() {
@@ -84,12 +86,15 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, carrito.size());
                 listener.onCarritoChange();
+                listener.actualizarTotales();
+
             }
         });
 
     }
     public interface OnCarritoChangeListener {
         void onCarritoChange();
+        void actualizarTotales();
     }
 
     @Override

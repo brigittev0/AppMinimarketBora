@@ -105,4 +105,9 @@ public class ProductoCarrito {
     public void removeOne() {
         this.cantidad--;
     }
+
+
+    public double getTotal() {
+        return this.cantidad * this.precio;
+    }
 }

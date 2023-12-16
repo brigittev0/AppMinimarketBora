@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,9 +87,10 @@ public class ProductosDashboardAdapter extends RecyclerView.Adapter<ProductosDas
 
                 // Agregar el producto al carrito
                 Carrito.agregarProducto(userId, carritoPedido);
+                Snackbar.make(v, "Producto añadido", Snackbar.LENGTH_SHORT).show();
 
-                // Notificar al adaptador que los datos han cambiado
-                notifyDataSetChanged();
+
+
             });
 
 

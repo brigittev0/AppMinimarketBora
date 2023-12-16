@@ -40,7 +40,7 @@ import pe.edu.idat.appborabora.retrofit.response.TopProductosResponse;
 import pe.edu.idat.appborabora.utils.Carrito;
 import pe.edu.idat.appborabora.viewmodel.AuthViewModel;
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends Fragment  {
     private AuthViewModel authViewModel;
     private ProductosDashboardAdapter productosDashboardAdapter;
     private List<TopProductosResponse> productoResponses = new ArrayList<>();

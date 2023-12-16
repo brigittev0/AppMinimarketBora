@@ -61,6 +61,15 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
         carritoAdapter = new CarritoAdapter(listaProductosCarrito,this);
         recyclerView.setAdapter(carritoAdapter);
 
+
+        SharedPreferences sharedPreference = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String subtotal = sharedPreference.getString("subtotal", "0");
+        String igv = sharedPreference.getString("igv", "0");
+        String total = sharedPreference.getString("total", "0");
+        binding.txtsubtotal.setText(subtotal);
+        binding.txtigv.setText(igv);
+        binding.txttotal.setText(total);
+
         binding.btnmetodo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +132,9 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
                 }
 
                 // Establecer el método de pago en CompraRequest como "en proceso"
-                compraRequest.setMetodopago("en proceso");
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+                String metodoPagoSeleccionado = sharedPreferences.getString("metodo_pago", "");
+                compraRequest.setMetodopago(metodoPagoSeleccionado);
 
                 authViewModel.postInsertCompra(compraRequest);
                 authViewModel.insertCompraResponseMutableLiveData.observe(getViewLifecycleOwner(), new Observer<ApiResponse>() {
@@ -135,6 +146,24 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
                             Toast.makeText(getContext(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             // Imprimir el mensaje en el logcat
                             Log.d("MyApp", "Respuesta de la API: " + apiResponse.getMessage());
+                            Carrito.limpiarCarrito(userId);
+
+                            // Actualizar la lista de productos en el adaptador
+                            listaProductosCarrito.clear();
+                            List<ProductoCarrito> productosEnCarrito = Carrito.getProductosEnCarrito(userId);
+                            if (productosEnCarrito != null) {
+                                listaProductosCarrito.addAll(productosEnCarrito);
+                            }
+                            carritoAdapter.setListaProductosCarrito(listaProductosCarrito);
+                            carritoAdapter.notifyDataSetChanged();
+
+                            // Establecer IGV, total y subtotal a 0
+                            binding.txtigv.setText("0");
+                            binding.txttotal.setText("0");
+                            binding.txtsubtotal.setText("0");
+
+                            // Refrescar el fragmento para ver los cambios inmediatamente
+                            getFragmentManager().beginTransaction().detach(CompraFragment.this).attach(CompraFragment.this).commit();
                         } else {
                             // Aquí puedes manejar el caso en que la respuesta es null
                             // Por ejemplo, puedes mostrar un mensaje de error al usuario
@@ -160,15 +189,6 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
         // Imprime el userId en Logcat
         Log.d("MyApp", "UserId: " + userId);
 
-        float subtotal = sharedPreferences.getFloat("subtotal", 0);
-        float igv = sharedPreferences.getFloat("igv", 0);
-        float total = sharedPreferences.getFloat("total", 0);
-
-        // Actualiza los TextViews con los valores recuperados
-        binding.txtsubtotal.setText(String.format(Locale.getDefault(), "%.2f", subtotal));
-        binding.txtigv.setText(String.format(Locale.getDefault(), "%.2f", igv));
-        binding.txttotal.setText(String.format(Locale.getDefault(), "%.2f", total));
-
         // Actualizar los datos en el adaptador aquí
         listaProductosCarrito.clear();
         List<ProductoCarrito> productosEnCarrito = Carrito.getProductosEnCarrito(userId);
@@ -193,5 +213,12 @@ public class CompraFragment extends Fragment implements CarritoAdapter.OnCarrito
         binding.txtsubtotal.setText(String.format(Locale.getDefault(), "%.2f", subtotal));
         binding.txtigv.setText(String.format(Locale.getDefault(), "%.2f", igv));
         binding.txttotal.setText(String.format(Locale.getDefault(), "%.2f", total));
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("subtotal", String.format(Locale.getDefault(), "%.2f", subtotal));
+        editor.putString("igv", String.format(Locale.getDefault(), "%.2f", igv));
+        editor.putString("total", String.format(Locale.getDefault(), "%.2f", total));
+        editor.apply();
     }
 }
