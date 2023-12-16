@@ -1,31 +1,38 @@
 package pe.edu.idat.appborabora.adapter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pe.edu.idat.appborabora.R;
-import pe.edu.idat.appborabora.retrofit.response.ProductoResponse;
+import pe.edu.idat.appborabora.retrofit.response.ProductoCarrito;
 import pe.edu.idat.appborabora.retrofit.response.TopProductosResponse;
+import pe.edu.idat.appborabora.utils.Carrito;
 
 public class ProductosDashboardAdapter extends RecyclerView.Adapter<ProductosDashboardAdapter.ViewHolder> {
 
     private List<TopProductosResponse> productoResponses;
 
-    public ProductosDashboardAdapter(List<TopProductosResponse> productoResponses){
+    private ArrayList<ProductoCarrito> p = new ArrayList<>();
+
+    public ProductosDashboardAdapter(List<TopProductosResponse> productoResponses) {
         this.productoResponses = productoResponses;
     }
+
     @NonNull
     @Override
     public ProductosDashboardAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -65,9 +72,30 @@ public class ProductosDashboardAdapter extends RecyclerView.Adapter<ProductosDas
                     .into(imgProducto);
             nombreProducto.setText(productoResponse.getNombre());
             precioProducto.setText(String.valueOf(productoResponse.getPrecio()));
+
             btnOrdenar.setOnClickListener(v -> {
-                Toast.makeText(itemView.getContext(),"Hola mundo", Toast.LENGTH_SHORT).show();
+                ProductoCarrito carritoPedido = new ProductoCarrito();
+                carritoPedido.setId(productoResponse.getId());
+                carritoPedido.setNombre(productoResponse.getNombre());
+                carritoPedido.setCantidad(1);
+                carritoPedido.setPrecio(productoResponse.getPrecio());
+                carritoPedido.setImagen(productoResponse.getImagen());
+
+                // Obtener el userId de las preferencias compartidas
+                SharedPreferences sharedPreferences = itemView.getContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+                int userId = sharedPreferences.getInt("user_id", 0);
+
+                // Agregar el producto al carrito
+                Carrito.agregarProducto(userId, carritoPedido);
+                Snackbar.make(v, "Producto añadido", Snackbar.LENGTH_SHORT).show();
+
+
+
             });
+
+
         }
     }
 }
+
+

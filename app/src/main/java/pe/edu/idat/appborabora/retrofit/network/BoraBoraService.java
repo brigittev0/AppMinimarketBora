@@ -3,6 +3,7 @@ package pe.edu.idat.appborabora.retrofit.network;
 
 import java.util.List;
 
+import pe.edu.idat.appborabora.retrofit.request.CompraRequest;
 import pe.edu.idat.appborabora.retrofit.request.LoginRequest;
 import pe.edu.idat.appborabora.retrofit.request.PerfilRequest;
 import pe.edu.idat.appborabora.retrofit.request.RegisterUserRequest;
@@ -59,7 +60,12 @@ public interface BoraBoraService {
 
     @GET("compras/info/{compraId}")
     Call<CompraResponse> getInfoCompra(@Path("compraId") int compraId);
+
     //BUSCAR PRODUCTO ID
     @GET("productos/buscarproducto/{id}")
     Call<ProductoResponse> getProductoById(@Path("id") int productoId);
+
+    @POST("compras/register/{userId}")
+    Call<ApiResponse> postInsertCompra(@Path("userId") int userId, @Body CompraRequest compraRequest);
 }
+

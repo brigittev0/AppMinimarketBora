@@ -1,6 +1,9 @@
 package pe.edu.idat.appborabora.viewmodel;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -14,6 +17,7 @@ import java.util.List;
 
 import pe.edu.idat.appborabora.retrofit.network.BoraBoraClient;
 import pe.edu.idat.appborabora.retrofit.network.BoraBoraService;
+import pe.edu.idat.appborabora.retrofit.request.CompraRequest;
 import pe.edu.idat.appborabora.retrofit.request.LoginRequest;
 import pe.edu.idat.appborabora.retrofit.request.PerfilRequest;
 import pe.edu.idat.appborabora.retrofit.request.UpdatePasswordRequest;
@@ -29,8 +33,6 @@ import pe.edu.idat.appborabora.retrofit.response.TopProductosResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AuthViewModel extends AndroidViewModel {
     public MutableLiveData<ApiResponse> registerResponseMutableLiveData = new MutableLiveData<>();
@@ -42,7 +44,7 @@ public class AuthViewModel extends AndroidViewModel {
     private MutableLiveData<List<TopProductosResponse>> productoResponseMutableLiveData = new MutableLiveData<>();
 
     private MutableLiveData<ProductoResponse> productoResponseMutableLiveData2 = new MutableLiveData<>();
-
+    public MutableLiveData<ApiResponse> insertCompraResponseMutableLiveData = new MutableLiveData<>();
     private BoraBoraClient client = new BoraBoraClient();
     private BoraBoraService service = client.getInstance();
     public MutableLiveData<ApiResponse> updatePerfilResponseLiveData = new MutableLiveData<>();
@@ -290,6 +292,7 @@ public class AuthViewModel extends AndroidViewModel {
         return data;
     }
 
+
     //-- OBTENER LA INFORMACION DE LA COMPRA DE UN USUARIO
     public LiveData<CompraResponse> getInfoCompra(int compraId) {
         MutableLiveData<CompraResponse> compraResponseMutableLiveData = new MutableLiveData<>();
@@ -327,4 +330,38 @@ public class AuthViewModel extends AndroidViewModel {
         return productoResponseMutableLiveData2;
     }
 
+    public void postInsertCompra(CompraRequest compraRequest) {
+        // Obtener userId de SharedPreferences
+        Application application = getApplication();
+        SharedPreferences sharedPref = getApplication().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        int userId = sharedPref.getInt("user_id", 0);
+
+
+        // Imprime el userId en Logcat
+        Log.d("MyApp----------", "UserId: " + userId);
+
+        new BoraBoraClient().getInstance().postInsertCompra(userId, compraRequest).enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful()) {
+                    insertCompraResponseMutableLiveData.setValue(response.body());
+                } else {
+                    try {
+                        ApiResponse errorResponse = new Gson().fromJson(response.errorBody().string(), ApiResponse.class);
+                        insertCompraResponseMutableLiveData.setValue(errorResponse);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
 }
+
+
