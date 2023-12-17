@@ -92,9 +92,9 @@ public class DashboardFragment extends Fragment  {
         List<SliderItem> lista = new ArrayList<>();
         lista.add(new SliderItem(R.drawable.img_8, ""));
         lista.add(new SliderItem(R.drawable.img_5, ""));
-        lista.add(new SliderItem(R.drawable.img_1, ""));
-        lista.add(new SliderItem(R.drawable.img_4, ""));
-        lista.add(new SliderItem(R.drawable.img_3, ""));
+        lista.add(new SliderItem(R.drawable.img_04, ""));
+        lista.add(new SliderItem(R.drawable.img_01, ""));
+        lista.add(new SliderItem(R.drawable.img_02, ""));
 
         sliderAdapter.updateItem(lista);
 
