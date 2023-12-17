@@ -10,9 +10,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import pe.edu.idat.appborabora.retrofit.response.PerfilResponse;
-import pe.edu.idat.appborabora.utils.ToastUtil;
 import pe.edu.idat.appborabora.viewmodel.AuthViewModel;
 
 import pe.edu.idat.appborabora.R;
@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void manejarRespuestaLogin(PerfilResponse perfilResponse) {
         if (perfilResponse != null && perfilResponse.getStatus().equals("OK")) {
-            ToastUtil.customMensaje(LoginActivity.this, "Inicio de sesión exitoso.");
+            Toast.makeText(LoginActivity.this, "Inicio de Sesion Existoso", Toast.LENGTH_LONG).show();
 
             //--SE GUARDA LOS DATOS DEL USUARIO INICIADO
             SharedPreferences sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             finish();  // Cierra la actividad
         } else {
             String mensaje = perfilResponse != null ? perfilResponse.getMessage() : "Error al hacer la llamada a la API.";
-            ToastUtil.customMensaje(LoginActivity.this, mensaje);
+            Toast.makeText(LoginActivity.this, mensaje, Toast.LENGTH_LONG).show();
         }
     }
 

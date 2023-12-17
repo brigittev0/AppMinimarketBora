@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,6 @@ import pe.edu.idat.appborabora.adapter.DetalleHistorialCompraAdapter;
 import pe.edu.idat.appborabora.databinding.FragmentDetalleHistorialCompraBinding;
 import pe.edu.idat.appborabora.retrofit.response.CompraResponse;
 import pe.edu.idat.appborabora.retrofit.response.ProductoCompraResponse;
-import pe.edu.idat.appborabora.utils.ToastUtil;
 import pe.edu.idat.appborabora.viewmodel.AuthViewModel;
 
 public class DetalleHistorialCompraFragment extends Fragment {
@@ -74,7 +74,7 @@ public class DetalleHistorialCompraFragment extends Fragment {
 
 
                 } else {
-                    ToastUtil.customMensaje(requireActivity(), "No se encontró información de la compra");
+                    Toast.makeText(getContext(), "No se encontró información de la compra", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -85,7 +85,7 @@ public class DetalleHistorialCompraFragment extends Fragment {
                 if (productosCompraResponses != null && !productosCompraResponses.isEmpty()) {
                     detalleHistorialCompraAdapter.setData(new ArrayList<>(productosCompraResponses));
                 } else {
-                    ToastUtil.customMensaje(requireActivity(), "No hay productos en esta compra");
+                    Toast.makeText(getContext(), "No hay productos en esta compra", Toast.LENGTH_SHORT).show();
                 }
             }
         });

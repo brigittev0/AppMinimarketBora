@@ -90,15 +90,13 @@ public class DashboardFragment extends Fragment  {
     private void loadData() {
 
         List<SliderItem> lista = new ArrayList<>();
-        lista.add(new SliderItem(R.drawable.img_3, ""));
-        lista.add(new SliderItem(R.drawable.img_2, ""));
+        lista.add(new SliderItem(R.drawable.img_8, ""));
+        lista.add(new SliderItem(R.drawable.img_5, ""));
         lista.add(new SliderItem(R.drawable.img_1, ""));
         lista.add(new SliderItem(R.drawable.img_4, ""));
+        lista.add(new SliderItem(R.drawable.img_3, ""));
+
         sliderAdapter.updateItem(lista);
-
-        svCarrusel.stopAutoCycle();
-        svCarrusel.startAutoCycle();
-
 
         authViewModel.listarTopProductos().observe(getViewLifecycleOwner(), response ->{
             productosDashboardAdapter.updateItems(response);

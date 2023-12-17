@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.btningresar.setOnClickListener(this);
         binding.tvregistro.setOnClickListener(this);
 
-
     }
 
     @Override

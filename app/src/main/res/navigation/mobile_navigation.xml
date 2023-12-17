@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/detalleHistorialCompras"
         android:name="pe.edu.idat.appborabora.view.fragments.DetalleHistorialCompraFragment"
-        android:label="Historial de compra"
+        android:label="Detalle de Compra"
         tools:layout="@layout/fragment_detalle_historial_compra" />
     <fragment
         android:id="@+id/detalleProductoFragment"

@@ -7,11 +7,14 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import pe.edu.idat.appborabora.R;
 import pe.edu.idat.appborabora.databinding.ActivityRegistroBinding;
 import pe.edu.idat.appborabora.retrofit.request.RegisterUserRequest;
-import pe.edu.idat.appborabora.utils.ToastUtil;
 import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
 import pe.edu.idat.appborabora.viewmodel.AuthViewModel;
 
@@ -58,7 +61,8 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
 
     private void manejarRespuestaRegistro(ApiResponse apiResponse) {
         if (apiResponse != null && apiResponse.getStatus().equals("CREATED")) {
-            ToastUtil.customMensaje(RegisterUserActivity.this, "Registro exitoso.");
+
+            Toast.makeText(RegisterUserActivity.this,"Registro exitoso.", Toast.LENGTH_LONG).show();
 
             setearControles();
             Intent intent = new Intent(RegisterUserActivity.this, LoginActivity.class);
@@ -67,7 +71,7 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
             finish();  // Cierra la actividad
         } else {
             String mensaje = apiResponse != null ? apiResponse.getMessage() : "Error al hacer la llamada a la API.";
-            ToastUtil.customMensaje(RegisterUserActivity.this, mensaje);
+            Toast.makeText(RegisterUserActivity.this, mensaje, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -213,7 +217,8 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
         return contrasena.length() >= 8 &&
                 contrasena.length() <= 15 &&
                 contieneMayuscula(contrasena) &&
-                contieneNumero(contrasena);
+                contieneNumero(contrasena)&&
+                contieneCaracterEspecial(contrasena);
     }
 
     private boolean contieneMayuscula(String s) {
@@ -233,6 +238,13 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
         }
         return false;
     }
+
+    private boolean contieneCaracterEspecial(String s) {
+        // Expresión regular para verificar caracteres especiales
+        String patron = "[^a-zA-Z0-9]";
+        Pattern pattern = Pattern.compile(patron);
+        Matcher matcher = pattern.matcher(s);
+        return matcher.find(); }
 
     private boolean validarCondicion1() {
         return binding.cbcondicion1.isChecked();

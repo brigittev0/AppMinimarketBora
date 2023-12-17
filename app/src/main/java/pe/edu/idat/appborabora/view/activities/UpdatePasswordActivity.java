@@ -7,10 +7,13 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import pe.edu.idat.appborabora.R;
 import pe.edu.idat.appborabora.databinding.ActivityNuevacontraBinding;
-import pe.edu.idat.appborabora.utils.ToastUtil;
 import pe.edu.idat.appborabora.retrofit.request.UpdatePasswordRequest;
 import pe.edu.idat.appborabora.retrofit.response.ApiResponse;
 import pe.edu.idat.appborabora.viewmodel.AuthViewModel;
@@ -54,7 +57,7 @@ public class UpdatePasswordActivity extends AppCompatActivity implements View.On
 
     private void manejarRptaUpdatePass(ApiResponse apiResponse) {
         if ((apiResponse != null && apiResponse.getStatus().equals("OK"))) {
-            ToastUtil.customMensaje(UpdatePasswordActivity.this, "Contraseña actualizada con éxito.");
+            Toast.makeText(UpdatePasswordActivity.this, "Contraseña actualizada con éxito.", Toast.LENGTH_LONG).show();
 
             setearControles();
             Intent intent = new Intent(UpdatePasswordActivity.this, LoginActivity.class);
@@ -63,7 +66,7 @@ public class UpdatePasswordActivity extends AppCompatActivity implements View.On
             finish();  // Cierra la actividad
         } else {
             String mensaje = apiResponse != null ? apiResponse.getMessage() : "Error al hacer la llamada a la API.";
-            ToastUtil.customMensaje(UpdatePasswordActivity.this, mensaje);
+            Toast.makeText(UpdatePasswordActivity.this, mensaje, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -77,7 +80,12 @@ public class UpdatePasswordActivity extends AppCompatActivity implements View.On
             binding.txtNewPassword.setError("Ingrese su nueva contraseña");
         }else if (!validarPassword()) {
             binding.txtNewPassword.setError("Debe tener 8+ caracteres, 1 mayúscula y 1 número");
-        } else {
+        } else if (!confirmarPassword()) {
+            // i las contraseñas no coinciden...
+            binding.txtNewPassword.setError("Las contraseñas no coinciden");
+        }
+
+        else {
             respuesta = true;
         }
         return respuesta;
@@ -123,7 +131,10 @@ public class UpdatePasswordActivity extends AppCompatActivity implements View.On
         return contrasena.length() >= 8 &&
                 contrasena.length() <= 15 &&
                 contieneMayuscula(contrasena) &&
-                contieneNumero(contrasena);
+                contieneNumero(contrasena) &&
+        contieneCaracterEspecial(contrasena);
+
+
     }
 
     private boolean contieneMayuscula(String s) {
@@ -152,4 +163,18 @@ public class UpdatePasswordActivity extends AppCompatActivity implements View.On
         binding.txtEmail.setFocusableInTouchMode(true);
         binding.txtEmail.requestFocus();
     }
+
+    private boolean confirmarPassword() {
+        String newPassword = binding.txtOldPassword.getText().toString().trim();
+        String confirmNewPassword = binding.txtNewPassword.getText().toString().trim();
+
+        return newPassword.equals(confirmNewPassword);
+    }
+
+    private boolean contieneCaracterEspecial(String s) {
+        // Expresión regular para verificar caracteres especiales
+        String patron = "[^a-zA-Z0-9]";
+        Pattern pattern = Pattern.compile(patron);
+        Matcher matcher = pattern.matcher(s);
+        return matcher.find(); }
 }
