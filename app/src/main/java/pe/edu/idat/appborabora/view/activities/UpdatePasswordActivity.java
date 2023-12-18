@@ -75,9 +75,9 @@ public class UpdatePasswordActivity extends AppCompatActivity implements View.On
         if (!ingresoEmail()) {
             binding.txtEmail.setError("Ingrese su correo electrónico");
         } else if (!ingresoOldPassword()) {
-            binding.txtOldPassword.setError("Ingrese su contraseña actual");
+            binding.txtOldPassword.setError("Ingrese su nueva contraseña");
         } else if (!ingresoNewPassword()) {
-            binding.txtNewPassword.setError("Ingrese su nueva contraseña");
+            binding.txtNewPassword.setError("Confirme contraseña");
         }else if (!validarPassword()) {
             binding.txtNewPassword.setError("Debe tener 8+ caracteres, 1 mayúscula y 1 número");
         } else if (!confirmarPassword()) {
